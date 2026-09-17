@@ -1,50 +1,35 @@
-# Frontend — [Project Name]
+# MOLAR Frontend
 
-Put your web/mobile application here: user interfaces, dashboards, mobile apps,
-PWA, etc.
+The initial MOLAR frontend foundation is a React single-page workspace preview.
+It uses Vite for local development and Tailwind CSS v4 for utility styling.
 
-## Stack (fill in)
-
-- Framework / platform: [your choice]
-- Styling: [your choice]
-- HTTP client: [your choice]
-
-## Local Setup (fill in)
+## Local Setup
 
 ```bash
 cd frontend
-<install frontend dependencies — command for your package manager>
-<start the frontend app>
+npm install
+npm run dev
 ```
 
-## Environment Variables
+Open the local URL printed by Vite, usually `http://localhost:5173`.
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `BACKEND_URL` | Backend API base URL | `http://localhost:8000` |
-
-> Values above are illustrative examples only — replace them with your own.
-> Never commit real `.env` values — see root `.gitignore`. A starting point is
-> provided in `.env.example`.
-
-## Tests & Lint
+## Checks
 
 ```bash
-# Replace <commands> with the ones for your stack
-<your test command>
-<your lint command>
-<your build command>
+npm run lint
+npm run build
 ```
 
-## Project Layout (adjust to your stack)
+No backend connection or environment variables are required for this frontend
+foundation.
+
+## Project Layout
 
 ```
 frontend/
-├── <entry point>       # app entry point
-├── <root component>    # main app component
-├── <components/>       # reusable UI
-├── <pages/>            # route views
-├── <services/>         # API calls
-├── <config files for your tooling>
+├── src/App.jsx         # MOLAR starting page
+├── src/index.css       # Tailwind import and visual foundation
+├── src/main.jsx        # React entry point
+├── vite.config.js      # Vite and Tailwind plugin configuration
 └── .env.example
 ```
