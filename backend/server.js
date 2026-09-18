@@ -99,6 +99,7 @@ app.use('/api/measurements', require('./routes/measurements'));
 app.use('/api/tooth-records', require('./routes/toothRecords'));
 app.use('/api/smile-visualizations', require('./routes/smileVisualizations'));
 app.use('/api/tooth-scans', require('./routes/toothScans'));
+app.use('/api/dento', require('./routes/dento'));
 
 // ---------------------------------------------------------------------------
 // Authenticated image serving
