@@ -1,205 +1,695 @@
-# MOLAR
+# 🦷 MOLAR
 
-### **DSOLVE 2026** · DRISHTI · College of Engineering Trivandrum (CET)
+### AI-Powered Dental Practice Operations & Patient Care Platform
 
-**BUILD. SOLVE. DEMONSTRATE.**
+> **One platform connecting dental practices, clinical teams, and patients — from appointment to treatment to follow-up.**
 
-|                   |                                           |
-| ----------------- | ----------------------------------------- |
-| **Problem:**      | Problem 1 — Oral Health Screening Widget  |
-| **Team Name:**    | [Your Team Name]                          |
-| **Team Members:** | [Name 1] · [Name 2] · [Name 3] · [Name 4] |
-| **Institution:**  | [College / University]                    |
-| **Live Demo:**    | [Demo link goes here]                     |
-| **Pitch Video:**  | [Social media pitch video link]           |
+MOLAR is a technology-driven dental practice platform designed to address fragmented workflows across modern dental practices.
+
+Dental teams often have to coordinate appointments, patient records, clinical notes, treatment plans, communication, billing, follow-ups, and administrative tasks across multiple workflows and systems.
+
+**MOLAR brings these workflows together into one connected platform, with an AI assistant called Dento helping teams understand information, identify pending work, and reduce administrative overhead.**
 
 ---
 
-## Table of Contents
+## 🎯 Problem
 
-- [Problem Statement](#problem-statement)
-- [Our Solution](#our-solution)
-- [Key Features](#key-features)
-- [Tech Stack](#tech-stack)
-- [Getting Started](#getting-started)
-- [Usage / Demo Script](#usage--demo-script)
-- [Limitations & Future Scope](#limitations--future-scope)
-- [Team](#team)
-- [Submission Checklist](#submission-checklist)
+Dental practices are not only clinical environments — they are also complex operational environments.
 
----
+A patient's journey can involve:
 
-## Problem Statement
-
-> ## Problem 1: Oral Health Screening Widget
->
-> Develop a free, two-minute oral health screening widget for web or smartphones
-> that guides patients through a simple set of prompts and captures quick images
-> of their teeth. The solution should analyse these images and generate an instant
-> visual report highlighting potential oral health concerns such as crooked teeth,
-> tooth wear, or discoloration. The goal is to provide patients with an easy,
-> accessible way to get an initial visual assessment of their oral health and
-> understand whether they may need to consult a dentist.
-
-### Why this matters
-
-Early detection of oral health issues — from gum disease to persistent ulcers —
-can dramatically improve outcomes and reduce treatment costs. Most people don't
-visit a dentist until a problem becomes severe. A simple, accessible screening
-tool bridges the gap between "noticing something" and getting professional care,
-especially for underserved populations without easy access to dental practices.
-
----
-
-## Our Solution
-
-MOLAR is a patient-centered dental intelligence platform that connects patients
-and dentists through a streamlined screening, review, and treatment journey.
-
-Patients complete a short oral health questionnaire and optionally upload an oral
-image. The screening is instantly shared with a dentist for review. The dentist
-creates a treatment plan in plain language, which the patient can read, understand,
-and track through their personal journey timeline. Dento — a contextual assistant
-built into the patient view — answers questions about the treatment plan and
-general dental care without diagnosing or overriding the clinician.
-
----
-
-## Key Features
-
-- **Oral Health Screening** — calm multi-step questionnaire covering risk factors (tobacco, alcohol, areca nut) and symptoms (ulcers, patches, lumps, bleeding), plus optional oral image upload
-- **Dentist Workspace** — case list with search/filter, full case detail with symptom summary, risk factors, image viewer, and one-click status updates
-- **Treatment Plans** — dentist creates patient-friendly treatment plans with structured steps and next appointment scheduling
-- **Patient Journey Timeline** — visual 5-stage journey (Screening → Evaluation → Treatment → Follow-up → Maintenance) with real-time stage tracking
-- **Dento Assistant** — contextual patient support using stored treatment data, with strict safety guardrails (no diagnosis, no prescriptions)
-- **Light/Dark Theme** — polished healthcare-grade UI with full dark mode support
-
----
-
-## Tech Stack
-
-| Layer     | Technology                        | Why we chose it                                              |
-|-----------|-----------------------------------|--------------------------------------------------------------|
-| Frontend  | React 19 + Vite 8 + Tailwind v4   | Fast, modern, lightweight — no unnecessary abstraction       |
-| Backend   | Node.js + Express 5               | Simple, fast to build, easy to explain at judging Q&A        |
-| Database  | SQLite via better-sqlite3         | Zero setup, embedded, perfect for hackathon demo             |
-| Auth      | JWT (jose) + bcryptjs             | Stateless auth, industry-standard password hashing           |
-| AI/Assist | Deterministic keyword logic       | No paid API required; fully explainable at Q&A               |
-
----
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js ≥ 20 (`node --version`)
-- npm ≥ 9
-
-### Installation
-
-**1. Clone and set up the backend:**
-
-```bash
-cd backend
-npm install
-cp .env.example .env
-# Edit .env — set a strong JWT_SECRET
-node server.js
+```text
+Appointment
+    ↓
+Patient Registration
+    ↓
+Medical / Dental History
+    ↓
+Clinical Examination
+    ↓
+Treatment Plan
+    ↓
+Treatment
+    ↓
+Billing / Payment
+    ↓
+Follow-up
+    ↓
+Recall / Future Appointment
 ```
 
-The backend starts on `http://localhost:8000`. The SQLite database is created
-automatically on first run.
+In practice, information and tasks can become fragmented across different systems and communication channels.
 
-**2. Set up the frontend (new terminal):**
+This can contribute to:
+
+* Missed or delayed follow-ups
+* Appointment cancellations and empty slots
+* Administrative workload for dental staff
+* Difficulty tracking treatment progress
+* Outstanding payments
+* Communication gaps between practice staff and patients
+* Difficulty getting a complete view of a patient's journey
+* Time spent searching through patient information
+
+### The opportunity
+
+Instead of treating appointments, patient records, treatment, communication, and follow-ups as separate workflows, MOLAR connects them into a **single dental practice operating platform**.
+
+---
+
+# 💡 Our Solution
+
+## MOLAR
+
+MOLAR is designed as a centralized platform for:
+
+### 👨‍⚕️ Dentists
+
+* Patient management
+* Clinical records
+* Dental history
+* Treatment planning
+* Treatment progress
+* Patient communication
+* Follow-up management
+* AI-assisted patient summaries
+
+### 👩‍💼 Practice Staff
+
+* Appointment management
+* Patient registration
+* Task management
+* Follow-up tracking
+* Communication
+* Billing and payment tracking
+* Practice operations
+
+### 🧑 Patients
+
+* Appointments
+* Treatment journey
+* Treatment plans
+* Documents
+* Communication
+* Follow-up reminders
+* AI-assisted explanations
+
+---
+
+# 🤖 Dento — MOLAR's AI Assistant
+
+At the heart of MOLAR is **Dento**, an AI assistant designed to help dental teams interact with practice information more naturally.
+
+Instead of manually searching through multiple screens, a dentist or staff member can ask questions such as:
+
+> "Give me a summary of today's patients."
+
+> "Which patients have pending treatment plans?"
+
+> "Which follow-ups are overdue?"
+
+> "Show me patients with outstanding balances."
+
+> "Summarize this patient's treatment history."
+
+Dento can transform existing practice information into useful summaries and actionable insights.
+
+### Dento can help with:
+
+* Patient record summarization
+* Appointment summaries
+* Treatment-plan summaries
+* Follow-up identification
+* Administrative task discovery
+* Patient communication drafts
+* Practice insights
+* Natural-language interaction with practice data
+
+### ⚠️ Safety
+
+Dento is designed as an **assistive system**, not a replacement for a dentist or qualified healthcare professional.
+
+It does not independently diagnose medical conditions, prescribe medication, or replace professional clinical judgment.
+
+Clinical decisions remain with qualified dental professionals.
+
+---
+
+# 🔄 The MOLAR Workflow
+
+MOLAR connects the complete patient journey.
+
+```text
+                    MOLAR
+                      │
+          ┌───────────┴───────────┐
+          │                       │
+      PRACTICE                 PATIENT
+          │                       │
+   ┌──────┼──────┐          ┌─────┼─────┐
+   │      │      │          │     │     │
+Dentist Staff  Admin      Visits Journey Dento
+   │      │      │          │     │     │
+   └──────┼──────┘          └─────┼─────┘
+          │                       │
+          └──────────┬────────────┘
+                     │
+                MOLAR CORE
+                     │
+      ┌──────────────┼──────────────┐
+      │              │              │
+   Patients     Scheduling      Treatment
+      │              │              │
+ Clinical         Billing       Follow-ups
+ Records         Payments       Messaging
+      │              │              │
+      └──────────────┼──────────────┘
+                     │
+                  DENTO AI
+```
+
+---
+
+# 🚀 Key Features
+
+## 🏠 Practice Dashboard
+
+A centralized overview of the practice.
+
+Provides visibility into:
+
+* Today's appointments
+* Pending treatment plans
+* Follow-ups
+* Outstanding payments
+* Patient activity
+* Practice tasks
+* Operational alerts
+
+---
+
+## 👥 Patient Management
+
+A unified patient profile containing relevant information in one place.
+
+### Patient profile can include:
+
+* Personal information
+* Dental history
+* Medical information
+* Appointments
+* Clinical notes
+* Treatment plans
+* Treatment progress
+* Documents
+* Payments
+* Follow-ups
+
+---
+
+## 📅 Smart Appointment Management
+
+Manage the practice schedule from one interface.
+
+Features include:
+
+* Appointment creation
+* Appointment status
+* Patient scheduling
+* Cancellation tracking
+* Rescheduling
+* Appointment reminders
+* Daily schedule overview
+
+Future versions can introduce intelligent scheduling and automated filling of cancelled slots.
+
+---
+
+# 🦷 Clinical Workspace
+
+Dentists can access the information needed for patient care from a dedicated clinical workspace.
+
+### Includes:
+
+* Patient history
+* Clinical notes
+* Dental information
+* Treatment plans
+* Treatment progress
+* Images and documents
+* Patient timeline
+
+The goal is to reduce unnecessary navigation between disconnected workflows.
+
+---
+
+# 📋 Treatment Planning
+
+Create and track treatment plans for patients.
+
+A treatment plan can contain:
+
+```text
+Patient
+   ↓
+Diagnosis / Clinical Finding
+   ↓
+Recommended Treatment
+   ↓
+Estimated Cost
+   ↓
+Treatment Status
+   ↓
+Completed / Pending
+```
+
+Dentists can track treatment progress while patients can understand where they are in their treatment journey.
+
+---
+
+# 💰 Billing & Payments
+
+MOLAR connects financial information with the patient journey.
+
+Potential capabilities include:
+
+* Treatment costs
+* Invoices
+* Payment status
+* Outstanding balances
+* Payment history
+* Billing overview
+
+Future versions can expand this into insurance and claims workflows for relevant markets.
+
+---
+
+# 🔔 Follow-up Automation
+
+One of MOLAR's core operational capabilities is keeping track of what happens **after** an appointment.
+
+For example:
+
+```text
+Treatment Completed
+        ↓
+Follow-up Required
+        ↓
+MOLAR Creates Follow-up
+        ↓
+Patient Reminder
+        ↓
+Appointment
+        ↓
+Patient Record Updated
+```
+
+This can help practices reduce the number of tasks that depend entirely on manual tracking.
+
+---
+
+# 📊 Practice Intelligence
+
+MOLAR can transform practice data into operational insights.
+
+Example:
+
+```text
+TODAY'S PRACTICE INTELLIGENCE
+
+⚠ 7 patients need follow-up
+⚠ 3 treatment plans awaiting acceptance
+⚠ 2 cancelled appointments
+⚠ 5 outstanding invoices
+✓ 18 appointments confirmed
+```
+
+Dento can help staff understand these insights using natural language.
+
+For example:
+
+> **"What needs my attention today?"**
+
+MOLAR can surface relevant operational information instead of requiring staff to manually search through different sections.
+
+---
+
+# 🌎 Designed for Global Dental Practices
+
+MOLAR is being developed with dental-practice workflows relevant to markets including:
+
+* 🇬🇧 United Kingdom
+* 🇦🇺 Australia
+* 🇺🇸 United States
+
+The platform is designed to be adaptable to different practice structures, workflows, and regulatory environments.
+
+Market-specific integrations such as insurance, claims, payments, and healthcare interoperability can be added as the platform evolves.
+
+---
+
+# 🧠 Why MOLAR?
+
+Traditional practice software often focuses on individual functions.
+
+MOLAR focuses on **connecting the entire patient and practice workflow**.
+
+```text
+Traditional Workflow
+
+Scheduling → Records → Treatment → Billing → Follow-up
+     ↓          ↓          ↓           ↓          ↓
+ Separate workflows / systems / manual coordination
+
+
+MOLAR
+
+                 ┌───────────┐
+                 │   MOLAR   │
+                 └─────┬─────┘
+                       │
+        ┌──────────────┼──────────────┐
+        ↓              ↓              ↓
+   Scheduling      Clinical       Operations
+        ↓              ↓              ↓
+   Treatment       Patient        Billing
+        ↓              ↓              ↓
+   Follow-up      Communication   Analytics
+                       │
+                       ↓
+                    DENTO AI
+```
+
+---
+
+# 🏆 Competition Context
+
+MOLAR is designed for the **Open Problem Statement – Dental Industry**.
+
+The project focuses specifically on problems faced by:
+
+* Dental practices
+* Dentists
+* Clinical teams
+* Administrative teams
+* Patients
+
+The solution addresses areas including:
+
+* Clinical workflows
+* Practice operations
+* Patient experience
+* Communication
+* Billing
+* Automation
+* AI-assisted workflows
+
+Rather than solving a single isolated dental task, MOLAR aims to demonstrate how technology can connect multiple parts of the dental-practice workflow.
+
+---
+
+# 🛠️ Technology Stack
+
+### Frontend
+
+* React
+* Vite
+* JavaScript / TypeScript
+* Modern responsive UI
+
+### Backend
+
+* Node.js
+* Express.js
+
+### Database
+
+* SQLite
+
+### Authentication
+
+* JWT-based authentication
+
+### AI
+
+* Dento AI assistant
+* LLM-powered natural-language interaction
+
+### Development
+
+* Git
+* GitHub
+* REST APIs
+
+---
+
+# 🏗️ Project Architecture
+
+```text
+MOLAR
+│
+├── frontend
+│   ├── Dashboard
+│   ├── Patients
+│   ├── Appointments
+│   ├── Treatment
+│   ├── Billing
+│   ├── Analytics
+│   └── Dento
+│
+├── backend
+│   ├── Authentication
+│   ├── Patient APIs
+│   ├── Appointment APIs
+│   ├── Treatment APIs
+│   ├── Billing APIs
+│   ├── Follow-up APIs
+│   └── AI APIs
+│
+└── database
+    └── SQLite
+```
+
+---
+
+# 🚀 Getting Started
+
+## 1. Clone the repository
+
+```bash
+git clone https://github.com/RajaAstra/Molar.git
+cd Molar
+```
+
+## 2. Install dependencies
+
+Install the dependencies for the frontend and backend according to their respective package configurations.
+
+Example:
+
+```bash
+npm install
+```
+
+If the project contains separate frontend and backend directories:
 
 ```bash
 cd frontend
 npm install
-cp .env.example .env
-# .env already points to http://localhost:8000 — no changes needed for local dev
+
+cd ../backend
+npm install
+```
+
+---
+
+# ⚙️ Environment Variables
+
+Create the required `.env` files for the backend and configure the required environment variables.
+
+Example:
+
+```env
+PORT=5000
+JWT_SECRET=your_secret
+AI_API_KEY=your_api_key
+```
+
+**Never commit real API keys or secrets to GitHub.**
+
+---
+
+# ▶️ Running MOLAR
+
+Start the backend:
+
+```bash
 npm run dev
 ```
 
-Open `http://localhost:5173`.
+Start the frontend:
 
-### Environment Variables
+```bash
+npm run dev
+```
 
-**Backend (`backend/.env`):**
-
-| Variable       | Description                       | Example                                  |
-|----------------|-----------------------------------|------------------------------------------|
-| `PORT`         | Backend port                      | `8000`                                   |
-| `JWT_SECRET`   | JWT signing secret (≥32 chars)    | `a-long-random-secret`                   |
-| `FRONTEND_URL` | Frontend CORS origin              | `http://localhost:5173`                  |
-
-**Frontend (`frontend/.env`):**
-
-| Variable        | Description          | Example                     |
-|-----------------|----------------------|-----------------------------|
-| `VITE_API_URL`  | Backend base URL     | `http://localhost:8000`     |
+The exact commands may vary depending on the current project configuration.
 
 ---
 
-## Usage / Demo Script
+# 🔐 Security & Privacy
 
-*3–5 minute live demo runbook.*
+Because MOLAR deals with sensitive dental information, privacy and security are core design considerations.
 
-1. **Boot** — start backend (`cd backend && node server.js`) + frontend (`cd frontend && npm run dev`)
-2. **Register as patient** — go to `/register`, select "Patient", create account
-3. **Complete screening** — walk through the 7-step oral health questionnaire, select symptoms and risk factors, optionally upload an image, submit
-4. **Register as dentist** (open new incognito window) — same `/register` flow, select "Dentist"
-5. **Dentist reviews case** — see the patient's screening in the case list, open it, view symptoms and image, add a review note, change status to "Reviewed"
-6. **Create treatment plan** — click "Create Treatment Plan", fill in title, explanation, and steps
-7. **Patient journey** — switch back to patient view, open "My Journey" — see the timeline advance to Treatment stage, see the plan
-8. **Ask Dento** — type "explain my plan" or "what are my follow-ups" in the Dento chat
-9. **Wow moment** — show light/dark theme toggle, the premium design, and the full end-to-end flow from screening to treatment plan in minutes
+The prototype is designed with principles including:
 
----
+* Authentication
+* Role-based access
+* Secure API communication
+* Environment-based secrets
+* Minimal exposure of patient information
+* No hardcoded API keys
+* Auditability of important actions
 
-## Limitations & Future Scope
-
-### Known Limitations
-
-- Oral image analysis is screening-support only — no automated clinical image analysis is performed
-- Dento uses deterministic keyword matching, not a live LLM
-- No real-time notifications; patients must refresh to see dentist updates
-- Single-device demo; no mobile app
-
-### Future Scope
-
-- Voice-based periodontal chart entry (Web Speech API integration)
-- Real-time push notifications (WebSockets or SSE)
-- LLM-powered Dento with GPT/Gemini backend (opt-in, privacy-respecting)
-- Digital smile design simulation overlay
-- Full HIPAA/GDPR-compliant deployment configuration
-- Mobile app (React Native)
+For real-world deployment, additional requirements would need to be addressed based on the target market, including applicable privacy, security, healthcare, and data-protection regulations.
 
 ---
 
-## Team
+# 🗺️ Roadmap
 
-| Name     | Role(s)                         | GitHub    | Email   |
-| -------- | ------------------------------- | --------- | ------- |
-| [Name 1] | Full-stack / Architecture       | [@handle] | [email] |
-| [Name 2] | Frontend / Design               |           |         |
-| [Name 3] | Backend / Database              |           |         |
-| [Name 4] | Product / Demo                  |           |         |
+## Phase 1 — Core Platform
+
+* [x] Authentication
+* [x] Patient management
+* [x] Dentist workflow
+* [x] Treatment plans
+* [x] Patient journey
+* [x] Initial Dento assistant
+
+## Phase 2 — Practice Operations
+
+* [ ] Advanced appointment management
+* [ ] Follow-up automation
+* [ ] Staff dashboard
+* [ ] Practice analytics
+* [ ] Billing workflow
+* [ ] Payment tracking
+* [ ] Automated reminders
+
+## Phase 3 — Intelligent Practice
+
+* [ ] Dento practice intelligence
+* [ ] Automated task detection
+* [ ] Smart scheduling assistance
+* [ ] Treatment-plan insights
+* [ ] Communication automation
+* [ ] Operational analytics
+
+## Phase 4 — Production Expansion
+
+* [ ] Insurance workflow support
+* [ ] External healthcare integrations
+* [ ] Multi-practice support
+* [ ] Advanced security controls
+* [ ] Market-specific compliance
+* [ ] Mobile patient experience
 
 ---
 
-## Submission Checklist
+# 🎥 Prototype Demonstration
 
-**Before 6:00 AM (Code Freeze) – Sat, Sept 19th:**
+The prototype demonstrates the core MOLAR workflow:
 
-- [ ] Clean, runnable source code committed to this **public** repo
-- [ ] `README.md` fully filled in (all sections above)
-- [ ] Pitch video (>30s, English) posted on team member's social profile
-      tagging **@DrishtiCET** & **@CareStack** and link added above
-- [ ] All secrets/API keys removed from the repo
-- [ ] Quick-start verified from a fresh clone (`git clone` → run)
+```text
+Login
+  ↓
+Practice Dashboard
+  ↓
+Patient
+  ↓
+Clinical Information
+  ↓
+Treatment Plan
+  ↓
+Patient Journey
+  ↓
+Follow-up
+  ↓
+Dento AI
+```
+
+The goal of the prototype is to demonstrate how a dental practice can move from fragmented workflows toward a connected digital workflow.
 
 ---
 
-**[Problem Statements](./docs/problem-statements.md)** ·
-**[Submission Checklist](./SUBMISSION_CHECKLIST.md)** ·
-**DSOLVE 2026 Guidelines**
+# 👥 Target Users
+
+### Dentists
+
+For clinical workflows, patient information, treatment planning, and AI-assisted summaries.
+
+### Dental Practice Staff
+
+For appointments, patient coordination, communication, billing, and operational tasks.
+
+### Practice Managers
+
+For practice-level visibility, analytics, workflow monitoring, and operational management.
+
+### Patients
+
+For appointments, treatment information, communication, and their overall treatment journey.
+
+---
+
+# 🌟 Vision
+
+MOLAR aims to become a **digital operating layer for modern dental practices**.
+
+Instead of making dentists and staff work around software, MOLAR is designed to make the software work around the **patient journey and the practice workflow**.
+
+```text
+                 PATIENT
+                    │
+                    ↓
+              ┌───────────┐
+              │   MOLAR   │
+              └───────────┘
+                    │
+       ┌────────────┼────────────┐
+       ↓            ↓            ↓
+   Clinical     Operations    Patient
+     Care          AI        Experience
+       │            │            │
+       └────────────┼────────────┘
+                    ↓
+             Better connected
+              dental workflow
+```
+
+---
+
+# 📄 Disclaimer
+
+MOLAR is a prototype developed for demonstration and innovation purposes.
+
+It is not a replacement for professional dental judgment, medical advice, diagnosis, or treatment.
+
+Any production deployment involving real patient information would require appropriate clinical validation, security controls, regulatory compliance, privacy protections, and integration testing for the target market.
+
+---
+
+# 📬 Project
+
+**MOLAR — AI-Powered Dental Practice Operations & Patient Care Platform**
+
+Built to explore how AI and modern software can improve the way dental practices operate and coordinate patient care.
+
+**Repository:**
+https://github.com/RajaAstra/Molar
+
+---
+
+### Built with 🦷 + 🤖
+
+**MOLAR × DENTO**
