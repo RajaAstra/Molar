@@ -13,8 +13,8 @@ export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem('molar_theme');
     if (saved) return saved;
-    // Default to system preference
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    // MOLAR is intentionally a black-label clinical workspace by default.
+    return 'dark';
   });
 
   useEffect(() => {

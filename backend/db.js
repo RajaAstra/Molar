@@ -285,7 +285,65 @@ function migrate(db) {
 
     CREATE INDEX IF NOT EXISTS idx_tooth_scans_patient ON tooth_scans(patient_id);
     CREATE INDEX IF NOT EXISTS idx_tooth_scans_dentist ON tooth_scans(dentist_id);
+
+    -- -------------------------------------------------------
+    -- smile_designs
+    -- Dentist-authored, patient-visible only after approval.
+    -- Image filenames are storage-provider agnostic for future cloud storage.
+    -- -------------------------------------------------------
+    CREATE TABLE IF NOT EXISTS smile_designs (
+      id                    INTEGER PRIMARY KEY AUTOINCREMENT,
+      patient_id            INTEGER NOT NULL REFERENCES users(id),
+      dentist_id            INTEGER NOT NULL REFERENCES users(id),
+      screening_id          INTEGER REFERENCES screenings(id),
+      original_image_path   TEXT,
+      simulated_image_path  TEXT,
+      treatment_plan        TEXT NOT NULL DEFAULT '[]',
+      annotations           TEXT NOT NULL DEFAULT '[]',
+      notes                 TEXT,
+      patient_summary       TEXT,
+      status                TEXT NOT NULL DEFAULT 'draft'
+                            CHECK(status IN ('draft','review','approved','archived')),
+      created_at            TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now')),
+      updated_at            TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_smile_design_patient ON smile_designs(patient_id);
+    CREATE INDEX IF NOT EXISTS idx_smile_design_dentist ON smile_designs(dentist_id);
+
+    -- -------------------------------------------------------
+    -- voice_clinical_measurements
+    -- Atomic, voice-derived measurements kept separate from the established
+    -- three-site periodontal chart for an auditable documentation workflow.
+    -- -------------------------------------------------------
+    CREATE TABLE IF NOT EXISTS voice_clinical_measurements (
+      id                    INTEGER PRIMARY KEY AUTOINCREMENT,
+      patient_id            INTEGER NOT NULL REFERENCES users(id),
+      dentist_id            INTEGER NOT NULL REFERENCES users(id),
+      screening_id          INTEGER REFERENCES screenings(id),
+      measurement_type      TEXT NOT NULL,
+      tooth_identifier      TEXT,
+      value                 REAL,
+      unit                  TEXT,
+      site                  TEXT,
+      notes                 TEXT,
+      voice_transcription   TEXT,
+      confidence_score      REAL,
+      corrected             INTEGER NOT NULL DEFAULT 0 CHECK(corrected IN (0, 1)),
+      corrects_id           INTEGER REFERENCES voice_clinical_measurements(id),
+      created_at            TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now')),
+      updated_at            TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_voice_measurement_patient ON voice_clinical_measurements(patient_id);
+    CREATE INDEX IF NOT EXISTS idx_voice_measurement_dentist ON voice_clinical_measurements(dentist_id);
   `);
+
+  // Older local databases may have been created before correction history was
+  // introduced. SQLite has no ADD COLUMN IF NOT EXISTS, so inspect first.
+  const voiceColumns = db.prepare("PRAGMA table_info('voice_clinical_measurements')").all();
+  if (voiceColumns.length && !voiceColumns.some((column) => column.name === 'corrects_id')) {
+    db.exec('ALTER TABLE voice_clinical_measurements ADD COLUMN corrects_id INTEGER REFERENCES voice_clinical_measurements(id)');
+  }
+  db.exec('CREATE INDEX IF NOT EXISTS idx_voice_measurement_corrects ON voice_clinical_measurements(corrects_id)');
 }
 
 module.exports = { getDb };

@@ -1,0 +1,10 @@
+import { useEffect, useState } from 'react';
+import { api } from '../api';
+
+export default function PatientSmileDesigns() {
+  const [designs, setDesigns] = useState([]);
+  const [images, setImages] = useState({});
+  const [error, setError] = useState('');
+  useEffect(() => { api.getSmileDesigns().then(async ({ smile_designs }) => { setDesigns(smile_designs); const pairs = await Promise.all(smile_designs.flatMap((design) => [api.fetchImageBlob(design.original_image_path).then((url) => [`${design.id}-before`, url]), api.fetchImageBlob(design.simulated_image_path).then((url) => [`${design.id}-after`, url])])); setImages(Object.fromEntries(pairs)); }).catch((err) => setError(err.message || 'Could not load approved smile designs.')); }, []);
+  return <div className="m-page-enter"><p className="m-eyebrow">Your treatment journey</p><h1>Smile Design Proposals</h1><p style={{ color: 'var(--text-2)', maxWidth: 650 }}>These clinician-approved proposals help you discuss options with your dentist. They are not guaranteed treatment outcomes.</p>{error && <p role="alert" className="molar-inline-error">{error}</p>}<div className="molar-patient-designs">{designs.length ? designs.map((design) => <article className="m-card molar-patient-design" key={design.id}><div className="molar-before-after"><figure>{images[`${design.id}-before`] ? <img src={images[`${design.id}-before`]} alt="Original smile" /> : <div>Original image not attached</div>}<figcaption>Current</figcaption></figure><figure>{images[`${design.id}-after`] ? <img src={images[`${design.id}-after`]} alt="Smile design proposal" /> : <div>Proposal image not attached</div>}<figcaption>Proposed direction</figcaption></figure></div><h2>{design.patient_summary || 'Your dentist has shared a smile proposal.'}</h2>{design.treatment_plan?.length > 0 && <ol>{design.treatment_plan.map((step) => <li key={step}>{step}</li>)}</ol>}<small>Approved by {design.dentist_name} · {new Date(design.updated_at).toLocaleDateString()}</small></article>) : <p className="molar-subtle">Your dentist has not shared an approved smile proposal yet.</p>}</div></div>;
+}

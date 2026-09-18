@@ -105,6 +105,32 @@ export const api = {
   getSmileVisualization: (id) => request('GET', `/api/smile-visualizations/${id}`),
   saveSmileVisualization: (id) => request('PATCH', `/api/smile-visualizations/${id}/save`),
 
+  // --- Dentist-authored digital smile designs ---
+  createSmileDesign: (formData) =>
+    request('POST', '/api/smile-design', { body: formData, isFormData: true }),
+  getSmileDesigns: (params = {}) => {
+    const qs = new URLSearchParams(params).toString();
+    return request('GET', `/api/smile-design${qs ? `?${qs}` : ''}`);
+  },
+  getSmileDesign: (id) => request('GET', `/api/smile-design/${id}`),
+  updateSmileDesign: (id, body) => request('PATCH', `/api/smile-design/${id}`, { body }),
+  updateSmileDesignStatus: (id, status) =>
+    request('PATCH', `/api/smile-design/${id}/status`, { body: { status } }),
+
+  // --- Atomic voice clinical documentation ---
+  parseClinicalVoice: (transcript) =>
+    request('POST', '/api/clinical-measurements/parse', { body: { transcript } }),
+  createVoiceClinicalMeasurement: (body) =>
+    request('POST', '/api/clinical-measurements', { body }),
+  getVoiceClinicalMeasurements: (params = {}) => {
+    const qs = new URLSearchParams(params).toString();
+    return request('GET', `/api/clinical-measurements${qs ? `?${qs}` : ''}`);
+  },
+  correctVoiceClinicalMeasurement: (id, body) =>
+    request('POST', `/api/clinical-measurements/${id}/correct`, { body }),
+  updateVoiceClinicalMeasurement: (id, body) =>
+    request('PUT', `/api/clinical-measurements/${id}`, { body }),
+
   // --- Tooth scans ---
   createToothScan: (formData) =>
     request('POST', '/api/tooth-scans', { body: formData, isFormData: true }),

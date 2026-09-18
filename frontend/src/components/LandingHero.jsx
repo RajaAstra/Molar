@@ -3,7 +3,7 @@ import { ArrowRight } from 'lucide-react'
 import { motion } from 'framer-motion'
 import ToothCanvas from './ToothCanvas'
 import toothImage from '../assets/tooth.jpg'
-import { Reveal, SplitText, Counter, Magnetic, Parallax } from './motionKit'
+import { Reveal, SplitText, Counter, Parallax } from './motionKit'
 
 export default function LandingHero({ booted }) {
   return (
@@ -48,14 +48,10 @@ export default function LandingHero({ booted }) {
 
           <Reveal delay={880}>
             <div className="molar-hero__cta">
-              <Magnetic>
-                <Link to="/register" className="molar-btn molar-btn--primary">
-                  <span>Start your screening</span><ArrowRight size={17} />
-                </Link>
-              </Magnetic>
-              <Magnetic>
-                <Link to="/login" className="molar-btn molar-btn--ghost"><span>Dentist sign in</span></Link>
-              </Magnetic>
+              <Link to="/register" className="molar-btn molar-btn--primary">
+                <span>Start your screening</span><ArrowRight size={17} />
+              </Link>
+              <Link to="/login" className="molar-btn molar-btn--ghost"><span>Dentist sign in</span></Link>
             </div>
           </Reveal>
       </div>

@@ -296,7 +296,46 @@ function parseCorrection(transcript) {
   return { ok: true, field, value: num };
 }
 
-module.exports = { parseMeasurement, parseCorrection, normalize, tokenToInt };
+/**
+ * Parse a single natural-language clinical finding for the voice workspace.
+ * This deliberately stays deterministic and returns confidence metadata so a
+ * future clinical NLP service can replace it without changing the API shape.
+ */
+function parseClinicalVoice(transcript) {
+  const text = normalize(transcript || '');
+  const tokens = text.split(' ').filter(Boolean);
+  const typeMap = [
+    ['pocket depth', 'pocket_depth'],
+    ['probing depth', 'pocket_depth'],
+    ['recession', 'recession'],
+    ['bleeding', 'bleeding'],
+    ['mobility', 'mobility'],
+    ['furcation', 'furcation'],
+  ];
+  const typeEntry = typeMap.find(([phrase]) => text.includes(phrase));
+  if (!typeEntry) return { ok: false, error: 'Say a finding such as “pocket depth”, “bleeding”, or “recession”.' };
+
+  const tooth = extractToothNumber(tokens)?.toothNumber || null;
+  const corrected = /\b(correction|correct|actually|change that)\b/.test(text);
+  const type = typeEntry[1];
+  const site = /\bdistal\b/.test(text) ? 'distal' : /\bmesial\b/.test(text) ? 'mesial' : /\b(lingual|palatal)\b/.test(text) ? 'lingual' : /\bbuccal\b/.test(text) ? 'buccal' : null;
+
+  if (type === 'bleeding') {
+    const value = detectBleeding(tokens);
+    if (value === null) return { ok: false, error: 'State whether bleeding is positive or negative.' };
+    return { ok: true, data: { measurement_type: type, tooth_identifier: tooth ? String(tooth) : null, value: value ? 1 : 0, unit: 'boolean', site, corrected, confidence_score: .94 } };
+  }
+
+  // The final spoken number wins when a correction is included.
+  const values = tokens.map(tokenToInt).filter((value) => value !== null);
+  const value = values.at(-1);
+  if (value === undefined || value < 0 || value > 20) {
+    return { ok: false, error: 'Provide a value between 0 and 20 millimeters.' };
+  }
+  return { ok: true, data: { measurement_type: type, tooth_identifier: tooth ? String(tooth) : null, value, unit: type === 'mobility' || type === 'furcation' ? 'grade' : 'mm', site, corrected, confidence_score: corrected ? .88 : .93 } };
+}
+
+module.exports = { parseMeasurement, parseCorrection, parseClinicalVoice, normalize, tokenToInt };
 
 // ---------------------------------------------------------------------------
 // Self-tests — run with: node periodontalParser.js

@@ -4,7 +4,7 @@
  */
 
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { Sun, Moon, LogOut, Menu, X, LayoutDashboard, ScanLine, Activity, ClipboardList } from 'lucide-react';
+import { Sun, Moon, LogOut, Menu, X, LayoutDashboard, ScanLine, Activity, ClipboardList, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
@@ -13,6 +13,7 @@ const PATIENT_NAV = [
   { to: '/dashboard', label: 'Overview',  icon: LayoutDashboard, end: true },
   { to: '/screening', label: 'Screening', icon: ScanLine,         end: true },
   { to: '/journey',   label: 'Journey',   icon: Activity,         end: true },
+  { to: '/smile-designs', label: 'Smile designs', icon: Sparkles, end: true },
 ];
 
 const DENTIST_NAV = [

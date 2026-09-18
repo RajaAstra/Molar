@@ -25,6 +25,9 @@ import DentistDashboard from './pages/DentistDashboard';
 import DentistCases from './pages/DentistCases';
 import CaseDetail from './pages/CaseDetail';
 import CreatePlan from './pages/CreatePlan';
+import ClinicalMeasurementWorkspace from './pages/ClinicalMeasurementWorkspace';
+import SmileDesignWorkspace from './pages/SmileDesignWorkspace';
+import PatientSmileDesigns from './pages/PatientSmileDesigns';
 
 /**
  * RootRedirect — send logged-in users directly to their dashboard
@@ -85,6 +88,10 @@ function AppRoutes() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/smile-designs"
+              element={<ProtectedRoute role="patient"><AppShell><PatientSmileDesigns /></AppShell></ProtectedRoute>}
+            />
 
             {/* Dentist routes */}
             <Route
@@ -126,6 +133,14 @@ function AppRoutes() {
                   </AppShell>
                 </ProtectedRoute>
               }
+            />
+            <Route
+              path="/dentist/cases/:id/clinical"
+              element={<ProtectedRoute role="dentist"><AppShell><ClinicalMeasurementWorkspace /></AppShell></ProtectedRoute>}
+            />
+            <Route
+              path="/dentist/cases/:id/smile-design"
+              element={<ProtectedRoute role="dentist"><AppShell><SmileDesignWorkspace /></AppShell></ProtectedRoute>}
             />
 
             {/* Catch-all */}

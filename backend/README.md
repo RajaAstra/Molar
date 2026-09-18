@@ -73,6 +73,37 @@ node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
 | GET    | `/api/follow-ups`              | any     | List follow-ups          |
 | PATCH  | `/api/follow-ups/:id/status`   | any     | Mark complete/missed     |
 
+### Digital Smile Design
+| Method | Path                           | Role    | Description                                      |
+|--------|--------------------------------|---------|--------------------------------------------------|
+| POST   | `/api/smile-design`            | dentist | Create a case-linked proposal; accepts images    |
+| GET    | `/api/smile-design`            | any     | Dentist's proposals / patient's approved designs |
+| GET    | `/api/smile-design/:id`        | any     | Get an authorized proposal                       |
+| PATCH  | `/api/smile-design/:id`        | dentist | Edit plan, annotations, and notes                |
+| PATCH  | `/api/smile-design/:id/status` | dentist | Set draft, review, approved, or archived         |
+
+`POST /api/smile-design` accepts multipart fields `original_image` and
+`simulated_image` plus `patient_id`, optional `screening_id`,
+`treatment_plan` (JSON array), `patient_summary`, and `notes`. A patient can
+only retrieve proposals with status `approved` that belong to them.
+
+### Real-time clinical measurements
+| Method | Path                                    | Role    | Description                              |
+|--------|-----------------------------------------|---------|------------------------------------------|
+| POST   | `/api/clinical-measurements/parse`      | dentist | Deterministically parse a voice transcript|
+| POST   | `/api/clinical-measurements`            | dentist | Save one structured clinical finding      |
+| GET    | `/api/clinical-measurements`            | any     | Retrieve authorized measurement history   |
+| POST   | `/api/clinical-measurements/:id/correct`| dentist | Create a linked correction record         |
+| PUT    | `/api/clinical-measurements/:id`        | dentist | API alias for a linked correction record  |
+| GET    | `/api/clinical-measurements/patient/:patientId` | any | Get authorized patient measurement history |
+
+Voice findings are atomic (`pocket_depth`, `recession`, `bleeding`,
+`mobility`, or `furcation`) and retain the original transcript and correction
+link. The deterministic parser is intentionally isolated so a reviewed AI/NLP
+service can be added later without changing the stored record shape.
+`case_id` is accepted as the case-context alias for the existing database's
+`screening_id` column, so the feature fits the established screening workflow.
+
 ### Static files
 Uploaded oral images are served at `GET /uploads/<filename>`.
 

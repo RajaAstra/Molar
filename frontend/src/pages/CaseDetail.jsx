@@ -30,6 +30,8 @@ import {
   CheckCircle2,
   Lock,
   X,
+  Mic,
+  Sparkles,
 } from 'lucide-react';
 
 // ---------------------------------------------------------------------------
@@ -588,6 +590,23 @@ export default function CaseDetail() {
               </div>
             )}
           </div>
+
+          {/* Create Treatment Plan link */}
+          <Link
+            to={`/dentist/cases/${id}/clinical`}
+            className="molar-case-tool"
+          >
+            <Mic size={18} />
+            <span><strong>Voice clinical measurements</strong><small>Capture and correct findings hands-free</small></span>
+          </Link>
+
+          <Link
+            to={`/dentist/cases/${id}/smile-design`}
+            className="molar-case-tool"
+          >
+            <Sparkles size={18} />
+            <span><strong>Digital Smile Design</strong><small>Create a proposal and control patient visibility</small></span>
+          </Link>
 
           {/* Create Treatment Plan link */}
           {canCreatePlan && (

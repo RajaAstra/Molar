@@ -46,7 +46,7 @@ app.use(
     },
     credentials: true,
     // Limit allowed methods to only those the API actually uses
-    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   }),
 );
@@ -102,6 +102,8 @@ app.use('/api/measurements', require('./routes/measurements'));
 app.use('/api/tooth-records', require('./routes/toothRecords'));
 app.use('/api/smile-visualizations', require('./routes/smileVisualizations'));
 app.use('/api/tooth-scans', require('./routes/toothScans'));
+app.use('/api/smile-design', require('./routes/smileDesign'));
+app.use('/api/clinical-measurements', require('./routes/clinicalMeasurements'));
 
 // ---------------------------------------------------------------------------
 // Authenticated image serving
@@ -119,7 +121,7 @@ app.get('/api/uploads/:filename', requireAuth, (req, res) => {
   }
 
   // Only serve files that match expected oral/smile/scan image name pattern
-  if (!/^(oral|smile|scan)-[\w-]+\.(jpg|jpeg|png|webp)$/i.test(basename)) {
+  if (!/^(oral|smile|scan|design)-[\w-]+\.(jpg|jpeg|png|webp)$/i.test(basename)) {
     return res.status(404).json({ error: 'File not found' });
   }
 

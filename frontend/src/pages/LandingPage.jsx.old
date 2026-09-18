@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { ArrowRight, ShieldCheck, ScanLine, Mic2, HeartPulse } from 'lucide-react'
 
 import Preloader from '../components/Preloader'
-import SmoothCursor from '../components/SmoothCursor'
 import LandingHero from '../components/LandingHero'
 import JourneyStageSection from '../components/JourneyStageSection'
 import { Marquee } from '../components/Marquee'
@@ -272,8 +271,6 @@ export default function LandingPage() {
   return (
     <div className="molar-landing">
       <Preloader onDone={() => setBooted(true)} />
-
-      <SmoothCursor />
 
       <LandingHero booted={booted} />
 

@@ -1,4 +1,3 @@
-/* ==========================================================================
    MOLAR — Design System
    Premium medical technology visual identity.
 
@@ -12,7 +11,7 @@
    7. Cinematic landing page (unchanged structure, new tokens flow through)
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
 @import 'tailwindcss';
 
 /* ==========================================================================
@@ -20,25 +19,26 @@
    ========================================================================== */
 :root {
   /* --- Backgrounds --- */
-  --bg: #000000;
-  --bg-alt: #050505;
-  --surface: #090909;
-  --surface-2: #10100e;
-  --surface-3: #17150e;
-  --glass: rgba(5,5,5,0.78);
-  --glass-border: rgba(212,175,55,0.18);
+  --bg:              #f9f8f5;           /* warm off-white — paper, not clinical-cold */
+  --bg-alt:          #f2f0ea;
+  --surface:         #ffffff;
+  --surface-2:       #f6f5f1;
+  --surface-3:       #ece9e2;
+  --glass:           rgba(255,255,255,0.78);
+  --glass-border:    rgba(255,255,255,0.60);
 
   /* --- Text --- */
-  --text: #f5d77a;
-  --text-2: #b89a5a;
-  --text-3: #7e6734;
-  --text-inv: #050505;
+  --text:            #10151f;           /* near-black ink, not navy-blue */
+  --text-2:          #454e5c;
+  --text-3:          #838d9a;
+  --text-inv:        #ffffff;
 
-  /* --- Brand --- */
-  --accent: #d4af37;
-  --accent-2: #ffd875;
-  --accent-3: #241d0a;
-  --accent-glow: rgba(212,175,55,0.2);
+  /* --- Brand accent — deep clinical blue (slightly deepened, less "SaaS bright") --- */
+  --accent:          #0a4fd6;
+  --accent-2:        #083da8;
+  --accent-3:        #e2eafc;
+  --accent-glow:     rgba(10,79,214,0.14);
+
   /* --- Semantic --- */
   --success:         #0f7a52;
   --success-bg:      #e9f5ee;
@@ -50,9 +50,9 @@
   --info-bg:         #e7f2f7;
 
   /* --- Borders --- */
-  --border: rgba(212,175,55,0.2);
-  --border-2: rgba(245,215,122,0.42);
-  --border-accent: rgba(212,175,55,0.42);
+  --border:          #e4e1d8;
+  --border-2:        #d2cdbf;
+  --border-accent:   rgba(10,79,214,0.22);
 
   /* --- Shadows — restrained, close, low-blur. Not glossy. --- */
   --shadow-sm:       0 1px 2px rgba(16,21,31,0.05);
@@ -68,9 +68,9 @@
   --radius-pill:     999px;
 
   /* --- Typography --- */
-  --font-body: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-display: 'Cormorant Garamond', 'Georgia', serif;
-  --font-mono: 'Manrope', monospace;
+  --font-body:       'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display:    'Fraunces', 'Georgia', serif;
+  --font-mono:       'IBM Plex Mono', 'Fira Code', monospace;
 
   /* --- Motion --- */
   --ease-out:        cubic-bezier(0.16, 1, 0.3, 1);
@@ -797,21 +797,19 @@ body { font-size: 16px; line-height: 1.65; }
    ============================================================ */
 
 .molar-landing {
-  --ml-bg: var(--bg);
-  --ml-ink: var(--text);
-  --ml-muted: var(--text-2);
-  --ml-accent: var(--accent);
-  --ml-warn: var(--warning);
-  --ml-border: var(--border);
-  --ml-card: var(--surface);
+  --ml-bg: var(--molar-bg, #0a0c12);
+  --ml-ink: var(--molar-ink, #e9ecf4);
+  --ml-muted: var(--molar-muted, #8a91a5);
+  --ml-accent: var(--molar-accent, #5b8cff);
+  --ml-warn: var(--molar-warn, #ff8a5c);
+  --ml-border: var(--molar-border, rgba(255, 255, 255, 0.1));
+  --ml-card: color-mix(in srgb, var(--ml-ink) 4%, var(--ml-bg));
   --ml-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
   position: relative;
   min-height: 100%;
   overflow-x: clip;
-  background:
-    radial-gradient(circle at 88% 4%, color-mix(in srgb, var(--ml-accent) 10%, transparent), transparent 28rem),
-    var(--ml-bg);
+  background: var(--ml-bg);
   color: var(--ml-ink);
 }
 
@@ -823,7 +821,7 @@ body { font-size: 16px; line-height: 1.65; }
   inset: -20%;
   z-index: 40;
   pointer-events: none;
-  opacity: 0.018;
+  opacity: 0.045;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='160' height='160' filter='url(%23n)' opacity='0.6'/></svg>");
   animation: molar-grain 9s steps(6) infinite;
 }
@@ -1106,7 +1104,7 @@ body { font-size: 16px; line-height: 1.65; }
 
 .molar-journey {
   position: relative;
-  height: 140vh;
+  height: 220vh;
 }
 
 .molar-journey--static {
@@ -1133,7 +1131,11 @@ body { font-size: 16px; line-height: 1.65; }
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: linear-gradient(100deg, var(--ml-bg) 12%, color-mix(in srgb, var(--ml-bg) 72%, transparent) 42%, transparent 64%);
+  background: linear-gradient(
+    100deg,
+    var(--ml-bg) 8%,
+    transparent 48%
+  );
 }
 
 .molar-journey__head {
@@ -1336,10 +1338,10 @@ body { font-size: 16px; line-height: 1.65; }
   display: grid;
   grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
   align-items: center;
-  gap: clamp(2rem, 5vw, 5rem);
+  gap: clamp(3rem, 8vw, 9rem);
   max-width: 1320px;
   margin: 0 auto;
-  padding: clamp(4rem, 8vw, 7rem) clamp(1.4rem, 5vw, 5rem);
+  padding: clamp(7rem, 13vw, 12rem) clamp(1.4rem, 6vw, 6rem);
 }
 
 .molar-product-section.is-reversed {
@@ -1356,8 +1358,8 @@ body { font-size: 16px; line-height: 1.65; }
 
 .molar-product-section__copy h2 {
   max-width: 10ch;
-  margin: 0.5rem 0 1rem;
-  font-size: clamp(2.35rem, 4.8vw, 4.8rem);
+  margin: 1.2rem 0;
+  font-size: clamp(2.5rem, 5.5vw, 5.6rem);
   letter-spacing: -0.045em;
   line-height: 0.98;
 }
@@ -1377,7 +1379,7 @@ body { font-size: 16px; line-height: 1.65; }
 .molar-product-card {
   position: relative;
   overflow: hidden;
-  min-height: 400px;
+  min-height: 470px;
   padding: clamp(1.2rem, 3vw, 2.2rem);
   border: 1px solid var(--ml-border);
   background:
@@ -1396,7 +1398,7 @@ body { font-size: 16px; line-height: 1.65; }
 .molar-toothmap,
 .molar-dento {
   height: 100%;
-  min-height: 350px;
+  min-height: 420px;
 }
 
 .molar-screening__top,
@@ -1697,7 +1699,7 @@ body { font-size: 16px; line-height: 1.65; }
 .molar-security {
   max-width: 1320px;
   margin: 0 auto;
-  padding: clamp(4rem, 8vw, 7rem) clamp(1.4rem, 5vw, 5rem);
+  padding: clamp(7rem, 13vw, 12rem) clamp(1.4rem, 6vw, 6rem);
 }
 
 .molar-security__intro h2 {
@@ -1719,13 +1721,13 @@ body { font-size: 16px; line-height: 1.65; }
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1px;
-  margin-top: 3rem;
+  margin-top: 5rem;
   border: 1px solid var(--ml-border);
   background: var(--ml-border);
 }
 
 .molar-security-card {
-  min-height: 210px;
+  min-height: 250px;
   padding: 1.5rem;
   background: var(--ml-bg);
 }
@@ -1758,13 +1760,13 @@ body { font-size: 16px; line-height: 1.65; }
 
 .molar-final-cta {
   position: relative;
-  min-height: 62svh;
+  min-height: 80svh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: 5rem 1.4rem;
+  padding: 8rem 1.4rem;
   text-align: center;
   border-top: 1px solid var(--ml-border);
 }
@@ -1853,6 +1855,39 @@ body { font-size: 16px; line-height: 1.65; }
   text-align: center;
 }
 
+/* cursor */
+
+.molar-cursor__dot,
+.molar-cursor__ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+.molar-cursor__dot {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  background: var(--ml-accent);
+}
+
+.molar-cursor__ring {
+  width: 36px;
+  height: 36px;
+  margin: -18px 0 0 -18px;
+  border: 1px solid var(--ml-accent);
+  opacity: 0.7;
+}
+
+html.molar-cursor-on,
+html.molar-cursor-on a,
+html.molar-cursor-on button {
+  cursor: none;
+}
+
 /* responsive */
 
 @media (max-width: 1024px) {
@@ -1881,7 +1916,7 @@ body { font-size: 16px; line-height: 1.65; }
   }
 
   .molar-journey {
-    height: 135vh;
+    height: 200vh;
   }
 
   .molar-journey__sticky::before {
@@ -1919,8 +1954,8 @@ body { font-size: 16px; line-height: 1.65; }
   .molar-product-section,
   .molar-product-section.is-reversed {
     grid-template-columns: 1fr;
-    gap: 2rem;
-    padding-block: 4rem;
+    gap: 3rem;
+    padding-block: 6rem;
   }
 
   .molar-product-section.is-reversed .molar-product-section__copy,
@@ -1934,7 +1969,7 @@ body { font-size: 16px; line-height: 1.65; }
   }
 
   .molar-product-card {
-    min-height: 340px;
+    min-height: 400px;
   }
 
   .molar-security__grid {
@@ -1975,207 +2010,3 @@ body { font-size: 16px; line-height: 1.65; }
     display: none;
   }
 }
-
-/* ========================================================================
-   MOLAR BLACK LABEL — luxury dental technology theme
-   ======================================================================== */
-.dark {
-  --bg: #000;
-  --bg-alt: #050505;
-  --surface: #090909;
-  --surface-2: #10100e;
-  --surface-3: #17150e;
-  --glass: rgba(5, 5, 5, 0.8);
-  --glass-border: rgba(212, 175, 55, 0.18);
-  --text: #f5d77a;
-  --text-2: #b89a5a;
-  --text-3: #7e6734;
-  --text-inv: #050505;
-  --accent: #d4af37;
-  --accent-2: #ffd875;
-  --accent-3: #241d0a;
-  --accent-glow: rgba(212, 175, 55, 0.2);
-  --border: rgba(212, 175, 55, 0.2);
-  --border-2: rgba(245, 215, 122, 0.42);
-  --border-accent: rgba(212, 175, 55, 0.42);
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.65);
-  --shadow: 0 14px 34px rgba(0,0,0,0.45);
-  --shadow-lg: 0 28px 90px rgba(0,0,0,0.7);
-  --shadow-accent: 0 10px 34px rgba(138,106,24,0.2);
-}
-
-body {
-  background: #000;
-  color: var(--text);
-  letter-spacing: 0.01em;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  color: var(--text);
-  font-weight: 600;
-  background: linear-gradient(112deg, #8a6a18 0%, #d4af37 36%, #f5d77a 56%, #c9a227 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.m-logo {
-  background: linear-gradient(135deg, #8a6a18, #d4af37 48%, #f5d77a 62%, #8a6a18);
-  color: #080705;
-  box-shadow: 0 0 0 1px rgba(255,216,117,.34), 0 8px 28px rgba(138,106,24,.24);
-}
-
-.m-card, .molar-product-card {
-  background: linear-gradient(145deg, rgba(20,18,12,.92), rgba(5,5,5,.96));
-  border-color: var(--border);
-  box-shadow: inset 0 1px 0 rgba(255,216,117,.05), var(--shadow);
-}
-
-.m-card--interactive:hover, .molar-product-card:hover {
-  border-color: var(--border-2);
-  box-shadow: inset 0 1px 0 rgba(255,216,117,.1), 0 18px 50px rgba(0,0,0,.55), 0 0 26px rgba(212,175,55,.08);
-}
-
-.m-btn, .molar-btn {
-  border: 1px solid rgba(212,175,55,.55);
-  background: rgba(5,5,5,.72);
-  color: var(--accent-2);
-  box-shadow: inset 0 1px 0 rgba(255,216,117,.08);
-  border-radius: 4px;
-}
-
-.m-btn--primary, .molar-btn--primary {
-  background: linear-gradient(135deg, #100d05, #201806);
-  color: #f5d77a;
-}
-
-.m-btn:hover:not(:disabled), .molar-btn:hover {
-  border-color: #f5d77a;
-  background: linear-gradient(135deg, #211908, #0a0905);
-  color: #ffd875;
-  box-shadow: 0 0 0 1px rgba(245,215,122,.18), 0 10px 30px rgba(138,106,24,.22);
-}
-
-.m-input {
-  background: rgba(0,0,0,.72);
-  border-color: var(--border);
-  color: var(--text);
-}
-.m-input:focus { border-color: #d4af37; box-shadow: 0 0 0 3px rgba(212,175,55,.13); }
-
-.molar-landing {
-  background:
-    radial-gradient(circle at 78% 20%, rgba(138,106,24,.16), transparent 24rem),
-    radial-gradient(circle at 8% 82%, rgba(212,175,55,.07), transparent 28rem),
-    #000;
-}
-.molar-landing::after { opacity: .025; }
-.molar-eyebrow, .molar-kicker { color: #b89a5a; }
-.molar-eyebrow__dot { background: #d4af37; box-shadow: 0 0 12px rgba(212,175,55,.7); }
-
-.molar-hero { min-height: 100svh; isolation: isolate; }
-.molar-hero__canvas { opacity: .16; mix-blend-mode: screen; }
-.molar-hero__ghost { -webkit-text-stroke: 1px rgba(212,175,55,.12); }
-.molar-hero__content { max-width: 780px; }
-.molar-hero__title { font-size: clamp(3.6rem, 8vw, 8.6rem); line-height: .82; }
-.molar-hero__accent { display: inline-block; margin-top: .2em; font-size: .52em; line-height: .95; }
-.molar-hero__sub, .molar-product-section__description, .molar-security-card p, .molar-security__intro > p:last-child { color: var(--text-2); }
-.molar-hero__tooth-portrait {
-  position: absolute;
-  z-index: 1;
-  right: clamp(2rem, 10vw, 11rem);
-  top: 50%;
-  width: min(40vw, 580px);
-  aspect-ratio: 1;
-  transform-style: preserve-3d;
-  pointer-events: none;
-  filter: drop-shadow(0 0 38px rgba(212,175,55,.22));
-}
-.molar-hero__tooth-portrait::before {
-  content: '';
-  position: absolute;
-  inset: -12%;
-  z-index: -1;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(212,175,55,.25), rgba(138,106,24,.07) 38%, transparent 68%);
-  filter: blur(14px);
-}
-.molar-hero__tooth-portrait img {
-  width: 100%; height: 100%; object-fit: contain;
-  mix-blend-mode: luminosity;
-  filter: sepia(1) saturate(1.25) contrast(1.15) brightness(1.2);
-  opacity: .9;
-  -webkit-mask-image: radial-gradient(circle, #000 51%, transparent 75%);
-  mask-image: radial-gradient(circle, #000 51%, transparent 75%);
-}
-.molar-hero__tooth-glow { position:absolute; inset:18%; border-radius:50%; box-shadow: inset 0 0 60px rgba(255,216,117,.3), 0 0 65px rgba(212,175,55,.18); }
-.molar-hero__particle { position:absolute; width:4px; height:4px; border-radius:50%; background:#f5d77a; box-shadow:0 0 11px #d4af37; animation:molar-gold-drift 7s ease-in-out infinite; }
-.molar-hero__particle--one { top:14%; right:8%; }
-.molar-hero__particle--two { bottom:18%; left:4%; animation-delay:-2s; }
-.molar-hero__particle--three { top:52%; left:-8%; animation-delay:-4s; }
-@keyframes molar-gold-drift { 50% { transform: translate3d(16px,-26px,0); opacity:.25; } }
-
-.molar-marquee, .molar-final-cta { border-color: var(--border); }
-.molar-marquee__item, .molar-journey__rail-label, .molar-journey__body { color: var(--text-2); }
-.molar-journey__sticky::before { background: linear-gradient(100deg, #000 12%, rgba(0,0,0,.76) 42%, transparent 70%); }
-.molar-journey__index { -webkit-text-stroke-color: #d4af37; }
-.molar-security-card { background: linear-gradient(145deg, #0d0c09, #050505); }
-.molar-security-card svg, .molar-live i, .molar-online { color: #d4af37; }
-.molar-final-cta__ghost { -webkit-text-stroke-color: rgba(212,175,55,.18); }
-
-@media (max-width: 760px) {
-  .molar-hero__tooth-portrait { width: 88vw; right: -17vw; top: 18%; opacity: .5; }
-  .molar-hero__content { z-index: 3; }
-  .molar-hero__title { font-size: clamp(3.5rem, 19vw, 5.6rem); }
-}
-
-/* Refined black-label balance: gold is an information accent, never a tint. */
-.molar-landing { background: #000; }
-.molar-landing::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(120deg, rgba(255,255,255,.018), transparent 38%); }
-.molar-hero__tooth-portrait { width: min(43vw, 610px); filter: drop-shadow(0 26px 45px rgba(0,0,0,.7)); }
-.molar-hero__tooth-portrait::before { background: radial-gradient(circle, rgba(255,255,255,.10), transparent 65%); filter: blur(24px); }
-.molar-hero__tooth-portrait img { mix-blend-mode: screen; filter: grayscale(1) contrast(1.08) brightness(.92); opacity: .68; }
-.molar-hero__tooth-glow { box-shadow: inset 0 0 48px rgba(255,255,255,.07); }
-.molar-hero__particle { background: var(--accent); box-shadow: 0 0 8px rgba(212,175,55,.55); }
-.molar-hero__canvas { opacity: .10; }
-.molar-hero__content { max-width: 810px; padding-block: 2rem; }
-.molar-hero__title { letter-spacing: -.032em; }
-.molar-hero__accent { margin-top: .34em; letter-spacing: -.018em; line-height: 1.05; }
-.molar-btn { transition: transform .22s var(--ml-ease), border-color .22s ease, background .22s ease, box-shadow .22s ease; }
-.molar-btn:hover { transform: translateY(-2px); }
-.molar-btn:active { transform: translateY(0); }
-.molar-btn--primary, .molar-btn--primary:hover { background: #12100a; color: var(--accent-2); box-shadow: 0 12px 28px rgba(0,0,0,.48); }
-.molar-btn--primary::after { display: none; }
-/* All five stages are visible as one care map; scroll only advances emphasis. */
-.molar-journey { height: 125vh; min-height: 760px; }
-.molar-journey__sticky { transform-origin: center center; }
-.molar-journey__canvas { opacity: .065; }
-.molar-journey__head { top: clamp(2rem, 5vh, 4rem); }
-.molar-journey__head h2 { font-size: clamp(1.65rem, 2.3vw, 2.5rem); }
-.molar-journey__stages { position: absolute; inset: clamp(9rem, 18vh, 12rem) clamp(1.4rem, 6vw, 6rem) 3rem; z-index: 2; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: clamp(.65rem, 1.2vw, 1.15rem); align-items: stretch; }
-.molar-journey__stage { position: relative; inset: auto; max-width: none; min-height: 0; padding: clamp(.8rem, 1.5vw, 1.35rem); opacity: .72; pointer-events: auto; transform: none; border: 1px solid var(--border); background: rgba(0,0,0,.62); transition: opacity .3s ease, border-color .3s ease, transform .3s var(--ml-ease), background .3s ease; }
-.molar-journey__stage.is-active { opacity: 1; transform: translateY(-3px); border-color: var(--border-2); background: rgba(14,12,7,.88); transition-delay: 0s; }
-.molar-journey__stage:nth-child(4) { grid-column: 1 / span 1; }
-.molar-journey__stage:nth-child(5) { grid-column: 2 / span 1; }
-.molar-journey__index { font-size: clamp(1.4rem, 2.4vw, 2.3rem); opacity: .45; }
-.molar-journey__title { margin: .35rem 0 .45rem; font-size: clamp(1rem, 1.5vw, 1.35rem); line-height: 1.15; }
-.molar-journey__body { font-size: clamp(.74rem, .95vw, .9rem); line-height: 1.48; }
-.molar-journey__fraction { right: clamp(1.4rem, 6vw, 6rem); left: auto; bottom: 1.2rem; }
-
-.molar-back-link { display: inline-flex; align-items: center; gap: 4px; color: var(--text-2); font-size: .86rem; text-decoration: none; }
-.molar-back-link:hover { color: var(--accent-2); }
-.molar-field-label { display: grid; gap: 7px; color: var(--text-2); font-size: .74rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
-.molar-subtle, .molar-record small { color: var(--text-3); font-size: .83rem; }
-.molar-inline-error { margin-top: 18px; padding: 10px 12px; border: 1px solid rgba(212,175,55,.5); color: var(--accent-2); background: rgba(212,175,55,.06); }
-.voice-workspace { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(250px, .65fr); gap: 22px; }
-.molar-parse-panel { border-left: 1px solid var(--border); padding-left: 22px; color: var(--text-2); }
-.molar-parse-panel strong { display: block; margin-top: 18px; color: var(--accent-2); text-transform: capitalize; }
-.molar-parse-panel dl { display: grid; gap: 8px; margin: 18px 0; }.molar-parse-panel dl div { display:flex; justify-content:space-between; gap:10px; }.molar-parse-panel dt { color: var(--text-3); }.molar-parse-panel dd { margin:0; color: var(--text); }
-.molar-record-list, .molar-design-list { display: grid; gap: 10px; margin-top: 14px; }
-.molar-record { display:flex; justify-content:space-between; align-items:flex-start; gap:15px; padding:14px 0; border-bottom:1px solid var(--border); }.molar-record p { margin:3px 0; color:var(--text-2); }.molar-record button { color:var(--accent); background:transparent; border:0; cursor:pointer; }
-.molar-correction-editor { display:flex; flex-wrap:wrap; align-items:end; gap:8px; margin-top:12px; }.molar-correction-editor label { display:grid; gap:4px; color:var(--text-3); font-size:.7rem; text-transform:uppercase; letter-spacing:.06em; }.molar-correction-editor input, .molar-correction-editor select { min-width:100px; padding:7px; color:var(--text); background:#090909; border:1px solid var(--border); }.molar-correction-editor .m-btn { min-height:34px; padding:.45rem .7rem; }
-.molar-design-form { display:grid; gap:16px; padding:24px; margin-top:24px; }.molar-design-files { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }.molar-design-files label { display:grid; gap:9px; padding:16px; border:1px dashed var(--border-2); color:var(--text-2); }.molar-design-files input { max-width:100%; color:var(--text-3); }.molar-design-files small { color:var(--text-3); }
-.molar-design-card { display:flex; justify-content:space-between; align-items:center; gap:18px; padding:18px; }.molar-design-card strong { color:var(--text); }.molar-design-card p:not(.molar-eyebrow) { margin:5px 0; color:var(--text-2); }.molar-design-card small { color:var(--text-3); }.molar-design-actions { display:flex; align-items:center; flex-shrink:0; }.molar-approved { color:var(--accent-2); font-size:.82rem; }
-.molar-patient-designs { display:grid; gap:20px; margin-top:28px; }.molar-patient-design { padding:20px; }.molar-before-after { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }.molar-before-after figure { margin:0; overflow:hidden; background:var(--surface-2); }.molar-before-after img { width:100%; height:220px; object-fit:cover; display:block; }.molar-before-after figure > div { height:220px; display:grid; place-items:center; color:var(--text-3); }.molar-before-after figcaption { padding:8px 10px; color:var(--text-2); font-size:.78rem; }.molar-patient-design h2 { font-size:1.25rem; margin-top:18px; }.molar-patient-design li { color:var(--text-2); }
-.molar-case-tool { display:flex; align-items:center; gap:12px; padding:14px 16px; border:1px solid var(--border); background:var(--surface); color:var(--accent); text-decoration:none; transition:border-color .2s ease, transform .2s ease; }.molar-case-tool:hover { border-color:var(--border-2); transform:translateY(-1px); }.molar-case-tool span { display:grid; gap:2px; }.molar-case-tool strong { font-size:.85rem; color:var(--text); }.molar-case-tool small { color:var(--text-3); font-size:.72rem; }
-@media (max-width: 760px) { .voice-workspace, .molar-design-files { grid-template-columns:1fr; }.molar-parse-panel { border-left:0; border-top:1px solid var(--border); padding:20px 0 0; }.molar-design-card { align-items:flex-start; flex-direction:column; }.molar-journey { height: auto; min-height: 0; padding:4rem 1.4rem; }.molar-journey__sticky { position:relative; height:auto; overflow:visible; }.molar-journey__canvas { display:none; }.molar-journey__head { position:relative; top:auto; left:auto; }.molar-journey__stages { position:relative; inset:auto; display:grid; grid-template-columns:1fr; margin-top:2rem; }.molar-journey__stage, .molar-journey__stage:nth-child(4), .molar-journey__stage:nth-child(5) { grid-column:auto; opacity:1; transform:none; }.molar-journey__fraction { display:none; }.molar-hero__tooth-portrait { filter: grayscale(1) drop-shadow(0 24px 36px #000); } }

@@ -1857,39 +1857,6 @@ body { font-size: 16px; line-height: 1.65; }
   text-align: center;
 }
 
-/* cursor */
-
-.molar-cursor__dot,
-.molar-cursor__ring {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9999;
-  pointer-events: none;
-  border-radius: 50%;
-}
-
-.molar-cursor__dot {
-  width: 6px;
-  height: 6px;
-  margin: -3px 0 0 -3px;
-  background: var(--ml-accent);
-}
-
-.molar-cursor__ring {
-  width: 36px;
-  height: 36px;
-  margin: -18px 0 0 -18px;
-  border: 1px solid var(--ml-accent);
-  opacity: 0.7;
-}
-
-html.molar-cursor-on,
-html.molar-cursor-on a,
-html.molar-cursor-on button {
-  cursor: none;
-}
-
 /* responsive */
 
 @media (max-width: 1024px) {
