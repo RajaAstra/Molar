@@ -539,9 +539,9 @@ p { margin: 0; }
 
 .molar-kicker { margin: 0; color: var(--ml-blue); font-size: 10px; font-weight: 700; letter-spacing: .18em; line-height: 1.4; text-transform: uppercase; }
 
-.molar-hero { min-height: calc(100vh - 76px); padding: clamp(56px, 8vw, 110px) clamp(20px, 6vw, 92px) 54px; position: relative; display: grid; grid-template-columns: minmax(340px, .82fr) minmax(500px, 1.18fr); gap: clamp(30px, 6vw, 100px); align-items: center; border-bottom: 1px solid var(--ml-line); }
+.molar-hero { min-height: calc(100vh - 76px); padding: clamp(5rem, 10vw, 4rem) clamp(1.4rem, 6vw, 6rem) 54px; display: grid; grid-template-columns: minmax(340px, .82fr) minmax(500px, 1.18fr); gap: clamp(30px, 6vw, 100px); align-items: flex-start; border-bottom: 1px solid var(--ml-line); }
 
-.molar-hero__noise { position: absolute; inset: 0; pointer-events: none; opacity: .28; background-image: linear-gradient(var(--ml-line) 1px, transparent 1px), linear-gradient(90deg, var(--ml-line) 1px, transparent 1px); background-size: 72px 72px; mask-image: linear-gradient(to bottom, black, transparent 82%); }
+.molar-hero__noise { position: absolute; inset: 0; pointer-events: none; opacity: .28; background-image: linear-gradient(var(--ml-line) 1px, transparent 1px), linear-gradient(90deg, var(--ml-line) 1px, transparent 1px); background-size: 72px 72px; mask-image: linear-gradient(to bottom, black, transparent 82%); 
 
 .molar-hero__copy { position: relative; z-index: 2; max-width: 650px; }
 .molar-hero__copy .molar-kicker { margin-bottom: 28px; }
@@ -905,8 +905,16 @@ body { font-size: 16px; line-height: 1.65; }
 
 .molar-hero__canvas {
   position: absolute;
-  inset: 0;
+  right: 6%;
+  top: 50%;
+  transform: translateY(-45%);
+
+  width: min(42vw, 620px);
+  height: min(42vw, 620px);
+
   z-index: 1;
+  pointer-events: none;
+}
 }
 
 .molar-hero__content {
@@ -2078,10 +2086,10 @@ h1, h2, h3, h4, h5, h6 {
 .molar-eyebrow, .molar-kicker { color: #b89a5a; }
 .molar-eyebrow__dot { background: #d4af37; box-shadow: 0 0 12px rgba(212,175,55,.7); }
 
-.molar-hero { min-height: 100svh; isolation: isolate; }
+.molar-hero { min-height: 90svh; isolation: isolate; }
 .molar-hero__canvas { opacity: .16; mix-blend-mode: screen; }
 .molar-hero__ghost { -webkit-text-stroke: 1px rgba(212,175,55,.12); }
-.molar-hero__content { max-width: 780px; }
+.molar-hero__content { max-width: 780px; padding-top: 0; }
 .molar-hero__title { font-size: clamp(3.6rem, 8vw, 8.6rem); line-height: .82; }
 .molar-hero__accent { display: inline-block; margin-top: .2em; font-size: .52em; line-height: .95; }
 .molar-hero__sub, .molar-product-section__description, .molar-security-card p, .molar-security__intro > p:last-child { color: var(--text-2); }
@@ -2089,7 +2097,7 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   z-index: 1;
   right: clamp(2rem, 10vw, 11rem);
-  top: 50%;
+  top: 20%;
   width: min(40vw, 580px);
   aspect-ratio: 1;
   transform-style: preserve-3d;
@@ -2143,7 +2151,7 @@ h1, h2, h3, h4, h5, h6 {
 .molar-hero__tooth-glow { box-shadow: inset 0 0 48px rgba(212,175,55,.22), 0 0 58px rgba(212,175,55,.14); }
 .molar-hero__particle { background: var(--accent); box-shadow: 0 0 8px rgba(212,175,55,.55); }
 .molar-hero__canvas { opacity: .10; }
-.molar-hero__content { max-width: 810px; padding-block: 2rem; }
+.molar-hero__content { max-width: 810px; padding-block: 0; }
 .molar-hero__title { letter-spacing: -.032em; }
 .molar-hero__accent { margin-top: .34em; letter-spacing: -.018em; line-height: 1.05; }
 .molar-btn { transition: transform .22s var(--ml-ease), border-color .22s ease, background .22s ease, box-shadow .22s ease; }

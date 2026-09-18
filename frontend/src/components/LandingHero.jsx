@@ -38,8 +38,7 @@ export default function LandingHero({ booted }) {
             <br />
             <span className="molar-hero__accent">
               <span className="hero-line">
-                <SplitText text="Intelligent dental care," delay={220} />
-              </span>
+<SplitText text="Intelligent dental-care," delay={220} />              </span>
               <span className="hero-line">
                 <SplitText text="reimagined." delay={440} />
               </span>
