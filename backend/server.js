@@ -125,6 +125,14 @@ app.get('/api/uploads/:filename', requireAuth, (req, res) => {
     return res.status(404).json({ error: 'File not found' });
   }
 
+  // Smile Design assets are scoped to the owning patient and dentist rather
+  // than being accessible to any authenticated user who guesses a filename.
+  const design = getDb().prepare(`SELECT patient_id, dentist_id FROM smile_designs
+    WHERE original_image_path = ? OR simulated_image_path = ? LIMIT 1`).get(basename, basename);
+  if (design && req.user.id !== design.patient_id && req.user.id !== design.dentist_id) {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+
   const filePath = path.join(UPLOADS_DIR, basename);
   res.sendFile(filePath, (err) => {
     if (err) res.status(404).json({ error: 'Image not found' });
@@ -166,6 +174,9 @@ app.use((err, req, res, _next) => {
 
   // Log internally but never expose stack traces to clients
   console.error('[MOLAR API Error]', err.message);
+  if (Number.isInteger(err.status) && err.status >= 400 && err.status < 500) {
+    return res.status(err.status).json({ error: err.message });
+  }
   res.status(500).json({ error: 'An unexpected error occurred' });
 });
 

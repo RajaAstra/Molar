@@ -112,7 +112,6 @@ export default function ToothCanvas({ mode = 'hero', progressRef, focus, classNa
     let W = 0, H = 0, side = 0, ox = 0, oy = 0
     let raf = 0, running = false, visible = true, resizeT = 0
     let particles = null, targets = null, colors = null
-    const mouse = { x: -9e3, y: -9e3 }
 
     const readColors = () => {
       const s = getComputedStyle(document.documentElement)
@@ -131,9 +130,6 @@ export default function ToothCanvas({ mode = 'hero', progressRef, focus, classNa
       }
     }
     readColors()
-    const themeObs = new MutationObserver(readColors)
-    themeObs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] })
-
     const layout = () => {
       const r = host.getBoundingClientRect()
       W = Math.max(1, r.width); H = Math.max(1, r.height)
@@ -150,7 +146,10 @@ export default function ToothCanvas({ mode = 'hero', progressRef, focus, classNa
       ox = W * f[0] - side / 2
       oy = H * f[1] - side / 2
 
-      const N = clamp(Math.round((W * H) / (mobile ? 1200 : 2200)), 220, 800)
+      // Keep the graphic atmospheric rather than turning it into a second app.
+      // Fewer particles and a capped render rate preserve the form while
+      // leaving the main thread available for scrolling and interaction.
+      const N = clamp(Math.round((W * H) / (mobile ? 3000 : 4200)), mobile ? 110 : 150, 360)
       targets = buildTargets(N)
       particles = Array.from({ length: N }, () => ({
         x: 0.5 + (Math.random() - 0.5) * 1.4, y: 0.5 + (Math.random() - 0.5) * 1.4, vx: (Math.random() - 0.5) * 0.05, vy: (Math.random() - 0.5) * 0.05,
@@ -166,28 +165,13 @@ export default function ToothCanvas({ mode = 'hero', progressRef, focus, classNa
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i]
         const [tx, ty, accent] = getPos(i)
-        // organic breathing
-        const bx = Math.sin(t * 0.7 + p.seed) * 0.006
-        const by = Math.cos(t * 0.55 + p.seed * 1.3) * 0.006
-        const gx = tx + bx, gy = ty + by
+        const gx = tx, gy = ty
 
         if (snap) { p.x = gx; p.y = gy; p.vx = p.vy = 0 }
         else {
           // spring toward target
           p.vx = (p.vx + (gx - p.x) * 0.028) * 0.86
           p.vy = (p.vy + (gy - p.y) * 0.028) * 0.86
-          // mouse repulsion (formation-space)
-          if (mouse.x > -9e3) {
-            const mx = (mouse.x - ox) / side, my = (mouse.y - oy) / side
-            const dx = p.x - mx, dy = p.y - my
-            const d2 = dx * dx + dy * dy
-            const R = 110 / side
-            if (d2 < R * R && d2 > 1e-6) {
-              const d = Math.sqrt(d2)
-              const f = (1 - d / R) * 0.045
-              p.vx += (dx / d) * f; p.vy += (dy / d) * f
-            }
-          }
           p.x += p.vx; p.y += p.vy
         }
 
@@ -237,8 +221,11 @@ export default function ToothCanvas({ mode = 'hero', progressRef, focus, classNa
       return i => [F.pos[i * 2], F.pos[i * 2 + 1], F.acc[i]]
     }
 
+    let lastDraw = 0
     const frame = ts => {
       raf = requestAnimationFrame(frame)
+      if (ts - lastDraw < 32) return
+      lastDraw = ts
       drawParticles(mode === 'journey' ? getJourneyPos() : getHeroPos(), ts / 1000, false)
     }
     const renderStatic = () => {
@@ -276,7 +263,7 @@ export default function ToothCanvas({ mode = 'hero', progressRef, focus, classNa
       window.addEventListener('scroll', onScroll, { passive: true })
       return () => {
         window.removeEventListener('scroll', onScroll)
-        cancelAnimationFrame(raf); themeObs.disconnect()
+        cancelAnimationFrame(raf)
       }
     }
 
@@ -289,27 +276,16 @@ export default function ToothCanvas({ mode = 'hero', progressRef, focus, classNa
     }, { rootMargin: '120px' })
     io.observe(host)
 
-    const onMove = e => {
-      const r = canvas.getBoundingClientRect()
-      mouse.x = e.clientX - r.left
-      mouse.y = e.clientY - r.top
-    }
-    const onLeave = () => { mouse.x = -9e3; mouse.y = -9e3 }
     const onResize = () => {
       clearTimeout(resizeT)
       resizeT = setTimeout(() => { layout() }, 140)
     }
-    window.addEventListener('pointermove', onMove, { passive: true })
-    window.addEventListener('pointerleave', onLeave)
     window.addEventListener('resize', onResize)
-    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()))
     start()
 
     return () => {
       stop(); clearTimeout(resizeT)
-      io.disconnect(); themeObs.disconnect()
-      window.removeEventListener('pointermove', onMove)
-      window.removeEventListener('pointerleave', onLeave)
+      io.disconnect()
       window.removeEventListener('resize', onResize)
     }
   }, [mode])

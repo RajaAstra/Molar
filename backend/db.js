@@ -304,6 +304,8 @@ function migrate(db) {
       patient_summary       TEXT,
       status                TEXT NOT NULL DEFAULT 'draft'
                             CHECK(status IN ('draft','review','approved','archived')),
+      approved_by           INTEGER REFERENCES users(id),
+      approved_at           TEXT,
       created_at            TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now')),
       updated_at            TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))
     );
@@ -344,6 +346,14 @@ function migrate(db) {
     db.exec('ALTER TABLE voice_clinical_measurements ADD COLUMN corrects_id INTEGER REFERENCES voice_clinical_measurements(id)');
   }
   db.exec('CREATE INDEX IF NOT EXISTS idx_voice_measurement_corrects ON voice_clinical_measurements(corrects_id)');
+
+  const smileDesignColumns = db.prepare("PRAGMA table_info('smile_designs')").all();
+  if (smileDesignColumns.length && !smileDesignColumns.some((column) => column.name === 'approved_by')) {
+    db.exec('ALTER TABLE smile_designs ADD COLUMN approved_by INTEGER REFERENCES users(id)');
+  }
+  if (smileDesignColumns.length && !smileDesignColumns.some((column) => column.name === 'approved_at')) {
+    db.exec('ALTER TABLE smile_designs ADD COLUMN approved_at TEXT');
+  }
 }
 
 module.exports = { getDb };

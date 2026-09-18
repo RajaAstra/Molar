@@ -304,35 +304,55 @@ function parseCorrection(transcript) {
 function parseClinicalVoice(transcript) {
   const text = normalize(transcript || '');
   const tokens = text.split(' ').filter(Boolean);
-  const typeMap = [
-    ['pocket depth', 'pocket_depth'],
-    ['probing depth', 'pocket_depth'],
-    ['recession', 'recession'],
-    ['bleeding', 'bleeding'],
-    ['mobility', 'mobility'],
-    ['furcation', 'furcation'],
-  ];
-  const typeEntry = typeMap.find(([phrase]) => text.includes(phrase));
-  if (!typeEntry) return { ok: false, error: 'Say a finding such as “pocket depth”, “bleeding”, or “recession”.' };
-
-  const tooth = extractToothNumber(tokens)?.toothNumber || null;
-  const corrected = /\b(correction|correct|actually|change that)\b/.test(text);
-  const type = typeEntry[1];
   const site = /\bdistal\b/.test(text) ? 'distal' : /\bmesial\b/.test(text) ? 'mesial' : /\b(lingual|palatal)\b/.test(text) ? 'lingual' : /\bbuccal\b/.test(text) ? 'buccal' : null;
+  const tooth = extractSpokenTooth(text, tokens);
+  const corrected = /\b(correction|correct|actually|change that)\b/.test(text);
+  const measurements = [];
+  const numberPattern = '(\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)';
+  const addNumeric = (type, expression, unit = 'mm') => {
+    const match = text.match(expression);
+    if (!match) return;
+    const value = spokenNumber(match[1]);
+    if (value === null || value < 0 || value > 20) return;
+    measurements.push({ measurement_type: type, tooth_identifier: tooth ? String(tooth) : null, value, unit, site, corrected, confidence_score: corrected ? .88 : .93 });
+  };
 
-  if (type === 'bleeding') {
+  addNumeric('pocket_depth', new RegExp(`(?:pocket depth|probing depth)(?: is)?\\s+${numberPattern}`));
+  addNumeric('recession', new RegExp(`recession(?: is)?\\s+${numberPattern}`));
+  addNumeric('mobility', new RegExp(`mobility(?: grade| is)?\\s+${numberPattern}`, 'i'), 'grade');
+  addNumeric('furcation', new RegExp(`furcation(?: grade| is)?\\s+${numberPattern}`, 'i'), 'grade');
+
+  if (/\bbleeding\b|\bbop\b/.test(text)) {
     const value = detectBleeding(tokens);
     if (value === null) return { ok: false, error: 'State whether bleeding is positive or negative.' };
-    return { ok: true, data: { measurement_type: type, tooth_identifier: tooth ? String(tooth) : null, value: value ? 1 : 0, unit: 'boolean', site, corrected, confidence_score: .94 } };
+    measurements.push({ measurement_type: 'bleeding', tooth_identifier: tooth ? String(tooth) : null, value: value ? 1 : 0, unit: 'boolean', site, corrected, confidence_score: .94 });
   }
 
-  // The final spoken number wins when a correction is included.
-  const values = tokens.map(tokenToInt).filter((value) => value !== null);
-  const value = values.at(-1);
-  if (value === undefined || value < 0 || value > 20) {
-    return { ok: false, error: 'Provide a value between 0 and 20 millimeters.' };
+  if (!measurements.length) return { ok: false, error: 'Say a finding such as “pocket depth”, “bleeding”, or “recession”.' };
+  return { ok: true, data: measurements[0], measurements };
+}
+
+function spokenNumber(value) {
+  if (/^\d+$/.test(value)) return Number(value);
+  const words = {
+    zero: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6,
+    seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12,
+    thirteen: 13, fourteen: 14, fifteen: 15, sixteen: 16,
+    seventeen: 17, eighteen: 18, nineteen: 19, twenty: 20,
+  };
+  return Object.prototype.hasOwnProperty.call(words, value) ? words[value] : null;
+}
+
+function extractSpokenTooth(text, tokens) {
+  const numeric = text.match(/\b(?:tooth\s+)?(1[1-8]|[2-4][1-8])\b/);
+  if (numeric) return Number(numeric[1]);
+  const written = text.match(/\btooth\s+(twenty|thirty|forty)[ -](one|two|three|four|five|six|seven|eight)\b/);
+  if (written) {
+    const tens = { twenty: 20, thirty: 30, forty: 40 }[written[1]];
+    const ones = spokenNumber(written[2]);
+    return tens + ones;
   }
-  return { ok: true, data: { measurement_type: type, tooth_identifier: tooth ? String(tooth) : null, value, unit: type === 'mobility' || type === 'furcation' ? 'grade' : 'mm', site, corrected, confidence_score: corrected ? .88 : .93 } };
+  return extractToothNumber(tokens)?.toothNumber || null;
 }
 
 module.exports = { parseMeasurement, parseCorrection, parseClinicalVoice, normalize, tokenToInt };

@@ -18,8 +18,8 @@ export default function LandingHero({ booted }) {
       <motion.div
         className="molar-hero__tooth-portrait"
         initial={{ opacity: 0, rotateY: -12, y: 36 }}
-        animate={{ opacity: 1, rotateY: 0, y: [0, -14, 0], rotateZ: [0, 1.5, 0] }}
-        transition={{ opacity: { duration: 1.4, ease: 'easeOut' }, rotateY: { duration: 1.4 }, y: { duration: 8, repeat: Infinity, ease: 'easeInOut' }, rotateZ: { duration: 10, repeat: Infinity, ease: 'easeInOut' } }}
+        animate={{ opacity: 1, rotateY: 0, y: 0 }}
+        transition={{ duration: 1.15, ease: [0.22, 1, 0.36, 1] }}
         aria-hidden="true"
       >
         <img src={toothImage} alt="" />
@@ -36,7 +36,14 @@ export default function LandingHero({ booted }) {
           <h1 className="molar-hero__title">
             <SplitText text="MOLAR" />
             <br />
-            <span className="molar-hero__accent"><SplitText text="Intelligent dental care," delay={220} /><br /><SplitText text="reimagined." delay={440} /></span>
+            <span className="molar-hero__accent">
+              <span className="hero-line">
+                <SplitText text="Intelligent dental care," delay={220} />
+              </span>
+              <span className="hero-line">
+                <SplitText text="reimagined." delay={440} />
+              </span>
+            </span>
           </h1>
 
           <Reveal delay={700}>

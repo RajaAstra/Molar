@@ -133,7 +133,15 @@ router.patch('/:id/status', requireAuth, requireRole('dentist'), (req, res) => {
   const existing = db.prepare('SELECT * FROM smile_designs WHERE id = ?').get(req.params.id);
   if (!existing) return res.status(404).json({ error: 'Smile design not found' });
   if (existing.dentist_id !== req.user.id) return res.status(403).json({ error: 'Access denied' });
-  db.prepare("UPDATE smile_designs SET status = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%SZ', 'now') WHERE id = ?").run(status, existing.id);
+  if (status === 'approved' && !existing.simulated_image_path) {
+    return res.status(400).json({ error: 'A proposal image is required before approval' });
+  }
+  db.prepare(`UPDATE smile_designs SET status = ?,
+    approved_by = CASE WHEN ? = 'approved' THEN ? ELSE approved_by END,
+    approved_at = CASE WHEN ? = 'approved' THEN strftime('%Y-%m-%dT%H:%M:%SZ', 'now') ELSE approved_at END,
+    updated_at = strftime('%Y-%m-%dT%H:%M:%SZ', 'now') WHERE id = ?`).run(
+    status, status, req.user.id, status, existing.id,
+  );
   return res.json({ smile_design: format(db.prepare('SELECT * FROM smile_designs WHERE id = ?').get(existing.id)) });
 });
 
