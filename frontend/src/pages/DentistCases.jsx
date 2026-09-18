@@ -84,7 +84,7 @@ function FilterPill({ label, active, onClick }) {
         fontWeight: 600,
         border: active ? 'none' : '1px solid var(--border)',
         background: active ? 'var(--accent)' : 'var(--surface)',
-        color: active ? '#fff' : 'var(--text-2)',
+        color: active ? 'var(--accent-2)' : 'var(--text-2)',
         cursor: 'pointer',
         transition: 'all var(--dur-fast) var(--ease-out)',
         whiteSpace: 'nowrap',

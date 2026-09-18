@@ -85,9 +85,9 @@ function HeroSection({ user, screenings, plans }) {
     cta = (
       <Link
         to="/screening"
-        className="m-btn m-btn--primary m-btn--xl inline-flex items-center gap-2"
+        className="m-btn m-btn--primary m-btn--lg inline-flex items-center gap-2"
       >
-        Begin screening <ArrowRight size={18} />
+        Begin screening <ArrowRight size={16} />
       </Link>
     );
   } else if (activePlan) {
@@ -96,9 +96,9 @@ function HeroSection({ user, screenings, plans }) {
     cta = (
       <Link
         to="/journey"
-        className="m-btn m-btn--primary m-btn--xl inline-flex items-center gap-2"
+        className="m-btn m-btn--primary m-btn--lg inline-flex items-center gap-2"
       >
-        View my journey <ArrowRight size={18} />
+        View my journey <ArrowRight size={16} />
       </Link>
     );
   } else {
@@ -107,11 +107,10 @@ function HeroSection({ user, screenings, plans }) {
       'A dental professional will review your submission and create a treatment plan for you.';
     cta = (
       <span
-        className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold"
+        className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold"
         style={{
           background: 'var(--warning-bg)',
-          border: '1px solid var(--warning)',
-          borderRadius: 'var(--radius-sm)',
+          borderColor: 'rgba(217,119,6,0.25)',
           color: 'var(--warning)',
         }}
       >
@@ -126,42 +125,56 @@ function HeroSection({ user, screenings, plans }) {
 
   return (
     <div
-      className="p-8 sm:p-12 overflow-hidden relative"
+      className="rounded-[var(--radius-xl)] p-8 sm:p-10 overflow-hidden relative"
       style={{
-        borderRadius: 'var(--radius-xl)',
-        background: 'var(--surface)',
-        border: '1px solid var(--border)',
-        borderLeft: '3px solid var(--accent)',
+        background:
+          'linear-gradient(135deg, color-mix(in srgb, var(--accent) 7%, var(--surface)) 0%, var(--surface) 60%)',
+        border: '1px solid var(--border-accent)',
         boxShadow: 'var(--shadow)',
       }}
     >
-      <p className="m-eyebrow mb-4">
+      {/* Decorative accent blob */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '-60px',
+          right: '-60px',
+          width: '260px',
+          height: '260px',
+          borderRadius: '50%',
+          background: 'var(--accent-glow)',
+          filter: 'blur(64px)',
+          pointerEvents: 'none',
+        }}
+      />
+
+      <p className="m-eyebrow mb-3">
         {timeGreeting()}, {firstName}
       </p>
 
       <h1
         style={{
           fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(2.25rem, 5vw, 3.75rem)',
-          fontWeight: 500,
-          fontStyle: 'italic',
-          letterSpacing: '-0.02em',
-          lineHeight: 1.05,
+          fontSize: 'clamp(1.75rem, 4vw, 2.75rem)',
+          fontWeight: 800,
+          letterSpacing: '-0.03em',
+          lineHeight: 1.1,
           color: 'var(--text)',
-          maxWidth: '640px',
+          maxWidth: '560px',
         }}
       >
         {headline}
       </h1>
 
       <p
-        className="mt-4 leading-relaxed"
-        style={{ color: 'var(--text-2)', maxWidth: '520px', fontSize: '17px' }}
+        className="mt-3 text-base leading-relaxed"
+        style={{ color: 'var(--text-2)', maxWidth: '480px' }}
       >
         {sub}
       </p>
 
-      <div className="mt-8">{cta}</div>
+      <div className="mt-6">{cta}</div>
     </div>
   );
 }
@@ -172,36 +185,35 @@ function HeroSection({ user, screenings, plans }) {
 function CareStageStrip({ currentIndex }) {
   return (
     <div
-      className="m-card flex items-center gap-2 overflow-x-auto p-4"
+      className="m-card flex items-center gap-1 overflow-x-auto p-3"
       style={{ scrollbarWidth: 'none' }}
     >
       {CARE_STAGES.map((stage, i) => {
         const isDone = i < currentIndex;
         const isCurrent = i === currentIndex;
+        const isUpcoming = i > currentIndex;
 
         return (
-          <div key={stage.key} className="flex items-center gap-2 shrink-0">
+          <div key={stage.key} className="flex items-center gap-1 shrink-0">
             <span
-              className="px-4 py-1.5 text-sm font-semibold transition-all duration-200"
+              className="rounded-full px-3 py-1 text-xs font-semibold transition-all duration-200"
               style={
                 isCurrent
                   ? {
-                      background: 'var(--text)',
-                      color: 'var(--bg)',
-                      borderRadius: 'var(--radius-sm)',
+                      background: 'var(--accent)',
+                      color: '#fff',
+                      boxShadow: '0 2px 8px var(--accent-glow)',
                     }
                   : isDone
                   ? {
                       background: 'var(--success-bg)',
                       color: 'var(--success)',
-                      border: '1px solid var(--success)',
-                      borderRadius: 'var(--radius-sm)',
+                      border: '1px solid rgba(5,150,105,0.20)',
                     }
                   : {
                       background: 'var(--surface-2)',
                       color: 'var(--text-3)',
                       border: '1px solid var(--border)',
-                      borderRadius: 'var(--radius-sm)',
                     }
               }
             >
@@ -210,7 +222,7 @@ function CareStageStrip({ currentIndex }) {
             </span>
             {i < CARE_STAGES.length - 1 && (
               <ChevronRight
-                size={14}
+                size={12}
                 style={{ color: isDone ? 'var(--success)' : 'var(--border-2)', flexShrink: 0 }}
               />
             )}
@@ -227,10 +239,10 @@ function CareStageStrip({ currentIndex }) {
 function ScreeningCard({ screening }) {
   if (!screening) {
     return (
-      <div className="m-card p-7 h-full flex flex-col">
-        <div className="flex items-center justify-between mb-5">
+      <div className="m-card p-6 h-full flex flex-col">
+        <div className="flex items-center justify-between mb-4">
           <h2
-            className="text-xl font-semibold"
+            className="text-base font-bold"
             style={{ fontFamily: 'var(--font-display)', color: 'var(--text)' }}
           >
             Latest Screening
@@ -239,23 +251,23 @@ function ScreeningCard({ screening }) {
             to="/screening"
             className="m-eyebrow flex items-center gap-1 hover:opacity-70 transition-opacity"
           >
-            Start now <ChevronRight size={13} />
+            Start now <ChevronRight size={11} />
           </Link>
         </div>
-        <div className="flex-1 flex flex-col items-center justify-center py-10 text-center">
+        <div className="flex-1 flex flex-col items-center justify-center py-8 text-center">
           <div
-            className="flex h-16 w-16 items-center justify-center text-3xl mb-4"
-            style={{ background: 'var(--surface-2)', borderRadius: 'var(--radius-lg)' }}
+            className="flex h-14 w-14 items-center justify-center rounded-2xl text-2xl mb-3"
+            style={{ background: 'var(--surface-2)' }}
           >
             🦷
           </div>
-          <p className="text-base font-semibold" style={{ color: 'var(--text)' }}>
+          <p className="text-sm font-semibold" style={{ color: 'var(--text)' }}>
             No screening yet
           </p>
-          <p className="text-sm mt-1.5" style={{ color: 'var(--text-3)' }}>
+          <p className="text-xs mt-1" style={{ color: 'var(--text-3)' }}>
             Complete your first oral health screening
           </p>
-          <Link to="/screening" className="m-btn m-btn--primary mt-5 inline-flex">
+          <Link to="/screening" className="m-btn m-btn--primary m-btn--sm mt-4 inline-flex">
             Start screening
           </Link>
         </div>
@@ -267,31 +279,36 @@ function ScreeningCard({ screening }) {
     ? screening.symptoms
     : JSON.parse(screening.symptoms || '[]');
 
+  const riskFactors =
+    typeof screening.risk_factors === 'object' && !Array.isArray(screening.risk_factors)
+      ? Object.keys(screening.risk_factors).filter((k) => screening.risk_factors[k])
+      : [];
+
   return (
-    <div className="m-card p-7 h-full flex flex-col">
-      <div className="flex items-center justify-between mb-6">
+    <div className="m-card p-6 h-full flex flex-col">
+      <div className="flex items-center justify-between mb-5">
         <h2
-          className="text-xl font-semibold"
+          className="text-base font-bold"
           style={{ fontFamily: 'var(--font-display)', color: 'var(--text)' }}
         >
           Latest Screening
         </h2>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <Badge status={screening.status} />
           <Link
             to="/screening"
             className="m-eyebrow flex items-center gap-1 hover:opacity-70 transition-opacity"
           >
-            New <ChevronRight size={13} />
+            New <ChevronRight size={11} />
           </Link>
         </div>
       </div>
 
-      <div className="flex-1 space-y-5">
+      <div className="flex-1 space-y-4">
         {/* Submitted date */}
         <div className="flex items-center gap-2">
-          <Calendar size={15} style={{ color: 'var(--text-3)' }} />
-          <span className="text-sm" style={{ color: 'var(--text-3)' }}>
+          <Calendar size={13} style={{ color: 'var(--text-3)' }} />
+          <span className="text-xs" style={{ color: 'var(--text-3)' }}>
             Submitted {formatDate(screening.created_at)}
           </span>
         </div>
@@ -300,21 +317,20 @@ function ScreeningCard({ screening }) {
         {symptoms.length > 0 ? (
           <div>
             <p
-              className="text-sm font-semibold uppercase tracking-wider mb-2.5"
-              style={{ color: 'var(--text-3)', letterSpacing: '0.06em' }}
+              className="text-xs font-semibold uppercase tracking-wider mb-2"
+              style={{ color: 'var(--text-3)' }}
             >
               Reported symptoms
             </p>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5">
               {symptoms.slice(0, 5).map((s) => (
                 <span
                   key={s}
-                  className="px-3 py-1 text-sm font-medium"
+                  className="rounded-full px-2.5 py-0.5 text-xs font-medium"
                   style={{
                     background: 'var(--surface-2)',
                     color: 'var(--text-2)',
                     border: '1px solid var(--border)',
-                    borderRadius: 'var(--radius-sm)',
                   }}
                 >
                   {s.replace(/_/g, ' ')}
@@ -322,12 +338,11 @@ function ScreeningCard({ screening }) {
               ))}
               {symptoms.length > 5 && (
                 <span
-                  className="px-3 py-1 text-sm font-medium"
+                  className="rounded-full px-2.5 py-0.5 text-xs font-medium"
                   style={{
                     background: 'var(--surface-2)',
                     color: 'var(--text-3)',
                     border: '1px solid var(--border)',
-                    borderRadius: 'var(--radius-sm)',
                   }}
                 >
                   +{symptoms.length - 5} more
@@ -336,7 +351,7 @@ function ScreeningCard({ screening }) {
             </div>
           </div>
         ) : (
-          <p className="text-sm" style={{ color: 'var(--text-3)' }}>
+          <p className="text-xs" style={{ color: 'var(--text-3)' }}>
             No symptoms reported.
           </p>
         )}
@@ -344,12 +359,11 @@ function ScreeningCard({ screening }) {
         {/* Image indicator */}
         {screening.image_filename && (
           <div
-            className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium"
+            className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium"
             style={{
               background: 'var(--success-bg)',
               color: 'var(--success)',
-              border: '1px solid var(--success)',
-              borderRadius: 'var(--radius-sm)',
+              border: '1px solid rgba(5,150,105,0.20)',
             }}
           >
             <span>📷</span> Oral image attached
@@ -359,16 +373,16 @@ function ScreeningCard({ screening }) {
         {/* Dentist note */}
         {screening.dentist_note && (
           <div
-            className="px-5 py-4"
-            style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}
+            className="rounded-xl px-4 py-3"
+            style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}
           >
             <p
-              className="text-sm font-semibold uppercase tracking-wider mb-1.5"
-              style={{ color: 'var(--text-3)', letterSpacing: '0.06em' }}
+              className="text-xs font-semibold uppercase tracking-wider mb-1"
+              style={{ color: 'var(--text-3)' }}
             >
               Dentist note
             </p>
-            <p className="leading-relaxed" style={{ color: 'var(--text)', fontSize: '15px' }}>
+            <p className="text-sm leading-relaxed" style={{ color: 'var(--text)' }}>
               {screening.dentist_note}
             </p>
           </div>
@@ -377,11 +391,10 @@ function ScreeningCard({ screening }) {
         {/* Awaiting review info banner */}
         {screening.status === 'submitted' && (
           <div
-            className="px-5 py-3.5 text-sm"
+            className="rounded-xl px-4 py-3 text-sm"
             style={{
               background: 'var(--info-bg)',
-              border: '1px solid var(--info)',
-              borderRadius: 'var(--radius)',
+              border: '1px solid rgba(2,132,199,0.20)',
               color: 'var(--info)',
             }}
           >
@@ -399,10 +412,10 @@ function ScreeningCard({ screening }) {
 function PlanCard({ plan }) {
   if (!plan) {
     return (
-      <div className="m-card p-7 h-full flex flex-col">
-        <div className="flex items-center justify-between mb-5">
+      <div className="m-card p-6 h-full flex flex-col">
+        <div className="flex items-center justify-between mb-4">
           <h2
-            className="text-xl font-semibold"
+            className="text-base font-bold"
             style={{ fontFamily: 'var(--font-display)', color: 'var(--text)' }}
           >
             Treatment Plan
@@ -411,20 +424,20 @@ function PlanCard({ plan }) {
             to="/journey"
             className="m-eyebrow flex items-center gap-1 hover:opacity-70 transition-opacity"
           >
-            Journey <ChevronRight size={13} />
+            Journey <ChevronRight size={11} />
           </Link>
         </div>
-        <div className="flex-1 flex flex-col items-center justify-center py-10 text-center">
+        <div className="flex-1 flex flex-col items-center justify-center py-8 text-center">
           <div
-            className="flex h-16 w-16 items-center justify-center text-3xl mb-4"
-            style={{ background: 'var(--surface-2)', borderRadius: 'var(--radius-lg)' }}
+            className="flex h-14 w-14 items-center justify-center rounded-2xl text-2xl mb-3"
+            style={{ background: 'var(--surface-2)' }}
           >
             📋
           </div>
-          <p className="text-base font-semibold" style={{ color: 'var(--text)' }}>
+          <p className="text-sm font-semibold" style={{ color: 'var(--text)' }}>
             No treatment plan yet
           </p>
-          <p className="text-sm mt-1.5" style={{ color: 'var(--text-3)' }}>
+          <p className="text-xs mt-1" style={{ color: 'var(--text-3)' }}>
             Your dentist will create a plan after reviewing your screening.
           </p>
         </div>
@@ -437,10 +450,10 @@ function PlanCard({ plan }) {
     : JSON.parse(plan.steps || '[]');
 
   return (
-    <div className="m-card p-7 h-full flex flex-col">
-      <div className="flex items-center justify-between mb-6">
+    <div className="m-card p-6 h-full flex flex-col">
+      <div className="flex items-center justify-between mb-5">
         <h2
-          className="text-xl font-semibold"
+          className="text-base font-bold"
           style={{ fontFamily: 'var(--font-display)', color: 'var(--text)' }}
         >
           Treatment Plan
@@ -449,22 +462,22 @@ function PlanCard({ plan }) {
           to="/journey"
           className="m-eyebrow flex items-center gap-1 hover:opacity-70 transition-opacity"
         >
-          Full journey <ChevronRight size={13} />
+          Full journey <ChevronRight size={11} />
         </Link>
       </div>
 
-      <div className="flex-1 space-y-5">
+      <div className="flex-1 space-y-4">
         {/* Title + status */}
         <div className="flex items-start gap-3">
           <div className="flex-1 min-w-0">
             <p
-              className="font-semibold text-lg leading-tight truncate"
-              style={{ fontFamily: 'var(--font-display)', color: 'var(--text)' }}
+              className="font-bold text-base leading-tight truncate"
+              style={{ color: 'var(--text)' }}
             >
               {plan.title}
             </p>
             {plan.dentist_name && (
-              <p className="text-sm mt-1" style={{ color: 'var(--text-3)' }}>
+              <p className="text-xs mt-0.5" style={{ color: 'var(--text-3)' }}>
                 by Dr. {plan.dentist_name}
               </p>
             )}
@@ -475,8 +488,8 @@ function PlanCard({ plan }) {
         {/* Explanation excerpt */}
         {plan.explanation && (
           <p
-            className="leading-relaxed line-clamp-3"
-            style={{ color: 'var(--text-2)', fontSize: '15px' }}
+            className="text-sm leading-relaxed line-clamp-3"
+            style={{ color: 'var(--text-2)' }}
           >
             {plan.explanation}
           </p>
@@ -484,33 +497,32 @@ function PlanCard({ plan }) {
 
         {/* Steps preview */}
         {steps.length > 0 && (
-          <div className="space-y-2.5">
+          <div className="space-y-2">
             <p
-              className="text-sm font-semibold uppercase tracking-wider"
-              style={{ color: 'var(--text-3)', letterSpacing: '0.06em' }}
+              className="text-xs font-semibold uppercase tracking-wider"
+              style={{ color: 'var(--text-3)' }}
             >
               Treatment steps
             </p>
-            <ol className="space-y-2">
+            <ol className="space-y-1.5">
               {steps.slice(0, 3).map((step, i) => (
-                <li key={i} className="flex items-start gap-3 text-sm">
+                <li key={i} className="flex items-start gap-2.5 text-sm">
                   <span
-                    className="flex h-6 w-6 shrink-0 items-center justify-center text-xs font-bold mt-0.5"
+                    className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-bold mt-0.5"
                     style={{
                       background: 'var(--accent-3)',
                       color: 'var(--accent)',
-                      borderRadius: 'var(--radius-sm)',
                     }}
                   >
                     {i + 1}
                   </span>
-                  <span style={{ color: 'var(--text-2)', fontSize: '15px' }}>
+                  <span style={{ color: 'var(--text-2)' }}>
                     {typeof step === 'object' ? step.step : step}
                   </span>
                 </li>
               ))}
               {steps.length > 3 && (
-                <li className="text-sm pl-9" style={{ color: 'var(--text-3)' }}>
+                <li className="text-xs pl-7" style={{ color: 'var(--text-3)' }}>
                   +{steps.length - 3} more steps
                 </li>
               )}
@@ -521,19 +533,18 @@ function PlanCard({ plan }) {
         {/* Next appointment */}
         {plan.next_appointment && (
           <div
-            className="flex items-center gap-2.5 px-4 py-3"
+            className="flex items-center gap-2 rounded-xl px-3 py-2.5"
             style={{
               background: 'var(--accent-3)',
               border: '1px solid var(--border-accent)',
-              borderRadius: 'var(--radius-sm)',
             }}
           >
-            <Calendar size={16} style={{ color: 'var(--accent)', flexShrink: 0 }} />
-            <span className="text-sm" style={{ color: 'var(--text-2)' }}>
+            <Calendar size={14} style={{ color: 'var(--accent)', flexShrink: 0 }} />
+            <span className="text-xs" style={{ color: 'var(--text-2)' }}>
               Next appointment:
             </span>
             <span
-              className="text-sm font-bold ml-auto"
+              className="text-xs font-bold ml-auto"
               style={{ color: 'var(--accent)' }}
             >
               {formatDate(plan.next_appointment)}
@@ -553,44 +564,43 @@ function FollowUpRow({ followUps }) {
   if (pending.length === 0) return null;
 
   return (
-    <div className="m-card p-7">
-      <div className="flex items-center justify-between mb-5">
+    <div className="m-card p-6">
+      <div className="flex items-center justify-between mb-4">
         <h2
-          className="text-xl font-semibold"
+          className="text-base font-bold"
           style={{ fontFamily: 'var(--font-display)', color: 'var(--text)' }}
         >
           Pending Follow-ups
         </h2>
         <span
-          className="px-3 py-1 text-sm font-bold"
+          className="rounded-full px-2.5 py-0.5 text-xs font-bold"
           style={{
             background: 'var(--warning-bg)',
             color: 'var(--warning)',
-            border: '1px solid var(--warning)',
-            borderRadius: 'var(--radius-sm)',
+            border: '1px solid rgba(217,119,6,0.20)',
           }}
         >
           {pending.length} pending
         </span>
       </div>
 
-      <div className="space-y-2.5">
+      <div className="space-y-2">
         {pending.map((f) => (
           <div
             key={f.id}
-            className="flex items-center gap-4 px-5 py-4"
-            style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}
+            className="flex items-center gap-4 rounded-xl px-4 py-3"
+            style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}
           >
             <span
-              className="h-2.5 w-2.5 rounded-full shrink-0 animate-pulse"
+              className="h-2 w-2 rounded-full shrink-0 animate-pulse"
               style={{ background: 'var(--warning)' }}
             />
             <div className="flex-1 min-w-0">
-              <p className="font-medium truncate" style={{ color: 'var(--text)', fontSize: '15px' }}>
+              <p className="text-sm font-medium truncate" style={{ color: 'var(--text)' }}>
                 {f.task}
               </p>
               {f.due_date && (
-                <p className="text-sm mt-0.5" style={{ color: 'var(--text-3)' }}>
+                <p className="text-xs mt-0.5" style={{ color: 'var(--text-3)' }}>
                   Due {formatDate(f.due_date)}
                 </p>
               )}
@@ -610,19 +620,19 @@ function QuickActions() {
   const tiles = [
     {
       to: '/screening',
-      icon: <ClipboardList size={22} style={{ color: 'var(--accent)' }} />,
+      icon: <ClipboardList size={20} style={{ color: 'var(--accent)' }} />,
       title: 'New Screening',
       desc: 'Answer a few quick questions',
     },
     {
       to: '/journey',
-      icon: <Activity size={22} style={{ color: 'var(--accent)' }} />,
+      icon: <Activity size={20} style={{ color: 'var(--accent)' }} />,
       title: 'View Journey',
       desc: 'Track your care progress',
     },
     {
       to: '/journey',
-      icon: <MessageCircle size={22} style={{ color: 'var(--accent)' }} />,
+      icon: <MessageCircle size={20} style={{ color: 'var(--accent)' }} />,
       title: 'Ask Dento',
       desc: 'Get answers about your care',
     },
@@ -634,25 +644,27 @@ function QuickActions() {
         <Link
           key={tile.to + tile.title}
           to={tile.to}
-          className="m-card m-card--interactive group flex items-center gap-4 p-6 transition-all duration-200 hover:border-[var(--border-accent)]"
+          className="m-card m-card--interactive group flex items-center gap-4 p-5 transition-all duration-200 hover:border-[var(--border-accent)]"
           style={{ textDecoration: 'none' }}
         >
           <div
-            className="flex h-12 w-12 shrink-0 items-center justify-center transition-colors duration-200"
-            style={{ background: 'var(--surface-2)', borderRadius: 'var(--radius)' }}
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors duration-200"
+            style={{
+              background: 'var(--surface-2)',
+            }}
           >
             {tile.icon}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="font-semibold" style={{ color: 'var(--text)', fontSize: '16px' }}>
+            <p className="text-sm font-semibold" style={{ color: 'var(--text)' }}>
               {tile.title}
             </p>
-            <p className="text-sm truncate" style={{ color: 'var(--text-3)' }}>
+            <p className="text-xs truncate" style={{ color: 'var(--text-3)' }}>
               {tile.desc}
             </p>
           </div>
           <ArrowRight
-            size={16}
+            size={14}
             className="shrink-0 transition-transform duration-200 group-hover:translate-x-0.5"
             style={{ color: 'var(--text-3)' }}
           />
@@ -702,7 +714,7 @@ export default function PatientDashboard() {
   const stageIndex = getStageIndex(screenings, plans, followUps);
 
   return (
-    <div className="m-page-enter space-y-7">
+    <div className="m-page-enter space-y-6">
       {/* 1. Hero */}
       <HeroSection user={user} screenings={screenings} plans={plans} />
 
@@ -710,7 +722,7 @@ export default function PatientDashboard() {
       {stageIndex >= 0 && <CareStageStrip currentIndex={stageIndex} />}
 
       {/* 3. Main 2-col grid */}
-      <div className="grid gap-7 lg:grid-cols-2">
+      <div className="grid gap-6 lg:grid-cols-2">
         <ScreeningCard screening={latestScreening} />
         <PlanCard plan={activePlan} />
       </div>
@@ -721,8 +733,8 @@ export default function PatientDashboard() {
       {/* 5. Quick actions */}
       <div>
         <p
-          className="text-sm font-semibold uppercase tracking-wider mb-4"
-          style={{ color: 'var(--text-3)', letterSpacing: '0.06em' }}
+          className="text-xs font-semibold uppercase tracking-wider mb-3"
+          style={{ color: 'var(--text-3)' }}
         >
           Quick actions
         </p>
@@ -730,7 +742,7 @@ export default function PatientDashboard() {
       </div>
 
       {/* Safety disclaimer */}
-      <p className="text-sm text-center" style={{ color: 'var(--text-3)' }}>
+      <p className="text-xs text-center" style={{ color: 'var(--text-3)' }}>
         MOLAR provides screening support only.{' '}
         <span className="font-semibold">This is not a substitute for professional dental care.</span>
       </p>

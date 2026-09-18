@@ -595,7 +595,7 @@ export default function CreatePlan() {
             aria-label="Save treatment plan"
           >
             {submitting ? (
-              <span className="m-spinner m-spinner--sm" style={{ color: '#fff' }} />
+              <span className="m-spinner m-spinner--sm" style={{ color: 'var(--accent-2)' }} />
             ) : (
               <CheckCircle2 size={16} />
             )}

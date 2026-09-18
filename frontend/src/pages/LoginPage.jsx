@@ -142,7 +142,7 @@ export default function LoginPage() {
               style={{ justifyContent: 'center', marginTop: 4, padding: '13px 20px', fontSize: 14 }}
             >
               {loading
-                ? <><span className="m-spinner m-spinner--sm" style={{ color: '#fff' }} /> Signing in…</>
+                ? <><span className="m-spinner m-spinner--sm" style={{ color: 'var(--accent-2)' }} /> Signing in…</>
                 : <>Sign in <ArrowRight size={15} /></>
               }
             </button>

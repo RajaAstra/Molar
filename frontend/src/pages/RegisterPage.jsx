@@ -85,7 +85,7 @@ export default function RegisterPage() {
         name:     form.name.trim(),
         email:    form.email.trim().toLowerCase(),
         password: form.password,
-        role:     form.role,
+        role:     form.role || 'patient',
       });
       login(token, user);
       navigate(user.role === 'dentist' ? '/dentist' : '/dashboard', { replace: true });
@@ -353,7 +353,7 @@ export default function RegisterPage() {
                           height:         '36px',
                           borderRadius:   '10px',
                           background:     active ? 'var(--accent)' : 'var(--surface-3)',
-                          color:          active ? '#fff' : 'var(--text-2)',
+                          color:          active ? 'var(--accent-2)' : 'var(--text-2)',
                           display:        'flex',
                           alignItems:     'center',
                           justifyContent: 'center',

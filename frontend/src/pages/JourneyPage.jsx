@@ -695,7 +695,7 @@ function DentoPanel({ screenings, plans, followUps }) {
                 msg.role === 'user'
                   ? {
                       background: 'var(--accent)',
-                      color: '#fff',
+                      color: 'var(--accent-2)',
                       borderBottomRightRadius: '4px',
                     }
                   : {

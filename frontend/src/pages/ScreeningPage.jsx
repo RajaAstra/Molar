@@ -117,7 +117,7 @@ function StepNav({ step, total, onBack, onNext, nextLabel = 'Continue', nextDisa
         {loading && (
           <span
             className="m-spinner m-spinner--sm"
-            style={{ color: '#fff' }}
+            style={{ color: 'var(--accent-2)' }}
             role="status"
             aria-label="Loading"
           />
@@ -162,7 +162,7 @@ function ToggleCard({ selected, onClick, label, desc }) {
       >
         {selected && (
           <svg viewBox="0 0 10 8" fill="none" width="10" height="8">
-            <path d="M1 4l3 3 5-6" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M1 4l3 3 5-6" stroke="#f5d77a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         )}
       </span>

@@ -1,10 +1,10 @@
 'use strict';
 
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 
@@ -27,18 +27,21 @@ app.use(
 );
 
 // ---------------------------------------------------------------------------
-// CORS — only allow the configured frontend origin
+// CORS — allow only the local development frontend origins plus an optional
+// configured deployment origin. Vite falls back to 5174 when 5173 is busy.
 // ---------------------------------------------------------------------------
-const allowedOrigins = [
+const allowedOrigins = new Set([
   'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:3000',
   process.env.FRONTEND_URL,
-].filter(Boolean);
+].filter(Boolean));
 
 app.use(
   cors({
     origin(origin, cb) {
       // Allow requests with no origin (curl, mobile apps in dev)
-      if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+      if (!origin || allowedOrigins.has(origin)) return cb(null, true);
       cb(new Error(`CORS: origin ${origin} not allowed`));
     },
     credentials: true,
