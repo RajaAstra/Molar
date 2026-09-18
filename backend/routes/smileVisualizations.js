@@ -119,9 +119,9 @@ router.get('/:id', requireAuth, (req, res) => {
   const row = db.prepare('SELECT * FROM smile_visualizations WHERE id = ?').get(req.params.id);
 
   if (!row) return res.status(404).json({ error: 'Visualization not found' });
-  if (row.patient_id !== req.user.id && req.user.role !== 'dentist') {
-    return res.status(403).json({ error: 'Access denied' });
-  }
+  if (req.user.role !== 'patient' || row.patient_id !== req.user.id) {
+  return res.status(403).json({ error: 'Access denied' });
+}
 
   const selectedConcept = row.concept || 'alignment';
   return res.json({

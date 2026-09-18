@@ -168,7 +168,11 @@ router.get('/:id', requireAuth, (req, res) => {
   const row = db.prepare('SELECT * FROM tooth_scans WHERE id = ?').get(req.params.id);
   if (!row) return res.status(404).json({ error: 'Scan not found' });
 
-  if (req.user.role === 'patient' && row.patient_id !== req.user.id) {
+    if (req.user.role === 'patient' && row.patient_id !== req.user.id) {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+
+  if (req.user.role === 'dentist' && row.dentist_id !== req.user.id) {
     return res.status(403).json({ error: 'Access denied' });
   }
 

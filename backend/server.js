@@ -109,23 +109,59 @@ app.use('/api/tooth-scans', require('./routes/toothScans'));
 const { requireAuth } = require('./middleware/auth');
 
 app.get('/api/uploads/:filename', requireAuth, (req, res) => {
-  // Sanitize: only allow the basename, reject any path separators
   const basename = path.basename(req.params.filename);
+
   if (!basename || basename !== req.params.filename) {
     return res.status(400).json({ error: 'Invalid filename' });
   }
 
-  // Only serve files that match expected oral/smile/scan image name pattern
   if (!/^(oral|smile|scan)-[\w-]+\.(jpg|jpeg|png|webp)$/i.test(basename)) {
     return res.status(404).json({ error: 'File not found' });
   }
 
+  const db = getDb();
+  let allowed = false;
+
+  if (basename.startsWith('oral-')) {
+    const row = db
+      .prepare('SELECT patient_id FROM screenings WHERE image_path = ?')
+      .get(basename);
+
+    allowed = !!row &&
+      (req.user.role === 'dentist' || row.patient_id === req.user.id);
+
+  } else if (basename.startsWith('smile-')) {
+    const row = db
+      .prepare('SELECT patient_id FROM smile_visualizations WHERE image_path = ?')
+      .get(basename);
+
+    allowed = !!row &&
+      req.user.role === 'patient' &&
+      row.patient_id === req.user.id;
+
+  } else if (basename.startsWith('scan-')) {
+    const row = db
+      .prepare('SELECT patient_id, dentist_id FROM tooth_scans WHERE image_path = ?')
+      .get(basename);
+
+    allowed = !!row && (
+      (req.user.role === 'patient' && row.patient_id === req.user.id) ||
+      (req.user.role === 'dentist' && row.dentist_id === req.user.id)
+    );
+  }
+
+  if (!allowed) {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+
   const filePath = path.join(UPLOADS_DIR, basename);
+
   res.sendFile(filePath, (err) => {
-    if (err) res.status(404).json({ error: 'Image not found' });
+    if (err) {
+      res.status(404).json({ error: 'Image not found' });
+    }
   });
 });
-
 // ---------------------------------------------------------------------------
 // Health check
 // ---------------------------------------------------------------------------
