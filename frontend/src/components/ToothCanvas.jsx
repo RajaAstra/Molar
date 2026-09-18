@@ -139,9 +139,9 @@ export default function ToothCanvas({ mode = 'hero', progressRef, focus, classNa
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 
       const mobile = W < 760
-      const f = focus || (mode === 'journey'
-        ? (mobile ? [0.5, 0.4] : [0.62, 0.5])
-        : (mobile ? [0.5, 0.42] : [0.5, 0.5]))
+const f = focus || (mode === 'journey'
+  ? (mobile ? [0.5, 0.4] : [0.62, 0.5])
+  : (mobile ? [0.5, 0.35] : [0.5, 0.35]))
       side = Math.min(W, H) * (mobile ? 0.92 : 0.8)
       ox = W * f[0] - side / 2
       oy = H * f[1] - side / 2
